@@ -1,0 +1,36 @@
+import React from "react";
+import { motion } from "framer-motion";
+
+export default function Home() {
+  return (
+    <div className="min-h-screen bg-white text-black flex flex-col items-center justify-center px-6">
+      {/* Hero Section */}
+      <motion.h1 
+        className="text-5xl font-bold mb-4 text-center"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+      >
+        欢迎加入信息学院辩论队
+      </motion.h1>
+      <motion.p 
+        className="text-lg text-gray-600 mb-8 text-center max-w-2xl"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+      >
+        这里是思维碰撞的舞台，锻炼你的逻辑与表达。快来报名吧！
+      </motion.p>
+
+      {/* Call to Action Button */}
+      <motion.a 
+        href="#signup" 
+        className="px-6 py-3 bg-black text-white rounded-lg shadow-lg text-lg font-semibold hover:bg-gray-800 transition"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        立即报名
+      </motion.a>
+    </div>
+  );
+}
