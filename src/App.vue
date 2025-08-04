@@ -46,12 +46,15 @@
 
     <!-- 3. Debate Gallery Section -->
     <DebateGallery />
+
+    <!-- 4. Team Culture Section -->
+    <TeamCulture />
   </div>
 </template>
 
 <script setup>
 import DebateGallery from './components/DebateGallery.vue';
-// Logic will be added here in the future.
+import TeamCulture from './components/TeamCulture.vue';
 </script>
 
 <style>
