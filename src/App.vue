@@ -46,6 +46,9 @@
     <!-- 5. Team Members Section -->
     <TeamMembers />
 
+    <!-- 6. Join Us Section -->
+    <JoinUs />
+
   </div>
 </template>
 
@@ -53,8 +56,12 @@
 import DebateGallery from './components/DebateGallery.vue';
 import TeamCulture from './components/TeamCulture.vue';
 import TeamMembers from './components/TeamMembers.vue';
+import JoinUs from './components/JoinUs.vue';
 </script>
 
 <style>
-/* Global styles can be added here if needed */
+/* Ensure smooth scrolling for anchor links */
+html {
+  scroll-behavior: smooth;
+}
 </style>
