@@ -31,7 +31,7 @@
         </div>
 
         <!-- Bottom-Right: Main Visual Area (Spanning 3 columns on large screens, starting from the 3rd column) -->
-        <div class="lg:col-span-3 lg:col-start-3 self-end w-full">
+        <div class="lg:col-span-5 lg:col-start-2 self-end w-full">
           <div class="aspect-w-16 aspect-h-9 bg-gray-800 rounded-lg overflow-hidden">
             <img 
               src="https://placehold.co/1280x720/1f2937/e5e7eb?text=Visual+Area" 
