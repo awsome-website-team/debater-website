@@ -1,0 +1,11 @@
+/* Set a default dark theme for the entire application */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #111827; /* A dark slate gray, more modern than pure black */
+  color: #f9fafb; /* A light off-white for better readability */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

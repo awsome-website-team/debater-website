@@ -1,70 +1,56 @@
 <template>
-  <!--导航栏-->
-  <nav class="fixed top-0 left-0 right-0 bg-gray-900 bg-opacity-30 shadow-lg flex justify-end gap-x-6 items-center z-30 p-4">
-    <a href="#why-debate" class="text-white hover:text-gray-300 transition">为何辩论</a>
-    <a href="#culture" class="text-white hover:text-gray-300 transition">团队文化</a>
-    <a href="#team" class="text-white hover:text-gray-300 transition">核心成员</a>
-    <a href="#join" class="px-5 py-2 bg-white text-black rounded-md text-sm font-semibold hover:bg-gray-200 transition">立即报名</a>
-  </nav>
+  <div class="min-h-screen bg-gray-900 text-gray-100 font-sans">
+    <!-- 1. Navigation Bar -->
+    <header class="fixed top-0 left-0 right-0 z-50">
+      <nav class="container mx-auto px-6 py-4 flex justify-end items-center">
+        <div class="space-x-6 text-sm">
+          <a href="#culture" class="hover:text-white transition-colors duration-300">文化</a>
+          <a href="#team" class="hover:text-white transition-colors duration-300">团队</a>
+          <a href="#join" class="bg-white text-gray-900 px-4 py-2 rounded-full hover:bg-gray-200 transition-colors duration-300 font-semibold">加入我们</a>
+        </div>
+      </nav>
+    </header>
 
-  <div class="min-h-screen bg-white text-black flex flex-col items-center justify-center px-6">
-    <!-- Hero Section -->
-    <h1 class="text-6xl font-bold mb-6 text-center animate-fade-in-down">
-      欢迎加入信息学院辩论队
-    </h1>
-    <p class="text-lg text-gray-600 mb-8 text-center max-w-2xl animate-fade-in-up">
-      这里是思维碰撞的舞台，锻炼你的逻辑与表达。快来报名吧！
-    </p>
+    <!-- 2. Main Hero Section -->
+    <main class="container mx-auto px-6 pt-24">
+      <!-- Asymmetrical Grid Layout -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 min-h-[calc(100vh-6rem)]">
+        
+        <!-- Top-Left: Giant Title (Spanning 3 columns on large screens) -->
+        <div class="lg:col-span-3 flex flex-col justify-center">
+          <h1 class="text-6xl lg:text-8xl font-extrabold tracking-tighter leading-tight">
+            思想的棱镜
+          </h1>
+        </div>
 
-    <!-- Call to Action Button -->
-    <a
-      href="#join"
-      class="px-6 py-3 bg-black text-white rounded-lg shadow-lg text-lg font-semibold hover:bg-gray-800 transition animate-fade-in-up"
-    >
-      立即报名
-    </a>
+        <!-- Top-Right: Intro Text (Spanning 2 columns on large screens) -->
+        <div class="lg:col-span-2 flex flex-col justify-start pt-12">
+          <p class="text-gray-400 max-w-sm">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </p>
+        </div>
+
+        <!-- Bottom-Right: Main Visual Area (Spanning 3 columns on large screens, starting from the 3rd column) -->
+        <div class="lg:col-span-3 lg:col-start-3 self-end w-full">
+          <div class="aspect-w-16 aspect-h-9 bg-gray-800 rounded-lg overflow-hidden">
+            <img 
+              src="https://placehold.co/1280x720/1f2937/e5e7eb?text=Visual+Area" 
+              alt="Placeholder for visual content"
+              class="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+
+      </div>
+    </main>
   </div>
 </template>
 
 <script setup>
-// This script is cleaned up and ready for future logic.
+// Logic will be added here in the future.
 </script>
 
-<style scoped>
-/* Styles from the original hero section, kept for the animations. */
-@keyframes fade-in-down {
-  0% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fade-in-up {
-  0% {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in-down {
-  animation: fade-in-down 0.8s ease forwards;
-}
-
-.animate-fade-in-up {
-  animation: fade-in-up 1s ease forwards;
-}
-
-/* Added for a modern, semi-transparent navbar effect */
-nav {
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
+<style>
+/* We are using pure Tailwind CSS for this component, so no extra styles are needed for now. */
+/* We might add global font imports or other base styles in main.css later. */
 </style>
