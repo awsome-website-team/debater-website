@@ -43,10 +43,14 @@
 
       </div>
     </main>
+
+    <!-- 3. Debate Gallery Section -->
+    <DebateGallery />
   </div>
 </template>
 
 <script setup>
+import DebateGallery from './components/DebateGallery.vue';
 // Logic will be added here in the future.
 </script>
 
