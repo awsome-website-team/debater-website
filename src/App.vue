@@ -14,21 +14,22 @@
     <!-- 2. Main Hero Section -->
     <main class="container mx-auto px-6 pt-24">
       <!-- Asymmetrical Grid Layout -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 min-h-[calc(100vh-6rem)]">
-        <div class="lg:col-span-3 flex flex-col justify-center">
-          <h1 class="text-6xl lg:text-8xl font-extrabold tracking-tighter leading-tight">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 min-h-[calc(100vh-6rem)] items-start">
+        <div class="lg:col-span-3 ">
+          <img src="./assets/log.png" class="h-56 w-auto"></img>
+          <!-- <h1 class="text-6xl lg:text-8xl font-extrabold tracking-tighter leading-tight">
             思想的棱镜
-          </h1>
+          </h1> -->
         </div>
-        <div class="lg:col-span-2 flex flex-col justify-start pt-12">
-          <p class="text-gray-400 max-w-sm">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        <div class="lg:col-span-2 flex flex-col items-end pt-4">
+          <p class="text-gray-400 max-w-sm text-right font-serif text-lg leading-relaxed">
+            欢迎来到信息学院辩论队官方网站，希望能在这趟短短的旅程中，将辩队内部最真实的温暖与感动带给你
           </p>
         </div>
-        <div class="lg:col-span-5 lg:col-start-2 self-end w-full">
+        <div class="lg:col-span-5  self-end w-full">
           <div class="aspect-w-16 aspect-h-9 bg-gray-800 rounded-lg overflow-hidden">
             <img 
-              src="https://placehold.co/1280x720/1f2937/e5e7eb?text=Visual+Area" 
+              src="./assets/主视觉图.jpg" 
               alt="Placeholder for visual content"
               class="w-full h-full object-cover"
             />

@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 bbg/
+src/assets
 
 
 # Editor directories and files
