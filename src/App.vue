@@ -14,7 +14,7 @@
     <!-- 2. Main Hero Section -->
     <main class="container mx-auto px-6 pt-24">
       <!-- Asymmetrical Grid Layout -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 min-h-[calc(100vh-6rem)] items-start">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 min-h-[calc(100vh-6rem)] items-center">
         <div class="lg:col-span-3 ">
           <img src="./assets/log.png" class="h-56 w-auto"></img>
           <!-- <h1 class="text-6xl lg:text-8xl font-extrabold tracking-tighter leading-tight">
