@@ -9,14 +9,15 @@
           <div class="card-content">
             <!-- Play/Pause Button -->
             <button v-if="album.audio" @click="togglePlay(album.id, index)" class="play-button">
-              <!-- Pause Icon -->
               <svg v-if="isPlaying && currentlyPlayingId === album.id" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-              <!-- Play Icon -->
               <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </button>
 
             <h3 class="title">{{ album.title }}</h3>
             <p class="subtitle">{{ album.subtitle }}</p>
+
+            <!-- Playing Icon Indicator -->
+            <PlayingIcon v-if="isPlaying && currentlyPlayingId === album.id" class="playing-indicator" />
           </div>
           <!-- Hidden Audio Element -->
           <audio :ref="el => audioRefs[index] = el" :src="album.audio" preload="none"></audio>
@@ -30,10 +31,11 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 import Lenis from 'lenis';
+import PlayingIcon from './PlayingIcon.vue'; // Import the new component
 
 // --- ASSET IMPORTS ---
 import moneyDebateImg from '@/assets/debategallery/金钱辩.png';
-import moneyDebateAudio from '@/assets/debategallery/金钱辩.aac';
+import moneyDebateAudio from '@/assets/debategallery/金钱辩.mp3';
 
 // --- DATA ---
 const albums = ref([
@@ -57,7 +59,6 @@ const togglePlay = (id, index) => {
   const audio = audioRefs.value[index];
   if (!audio) return;
 
-  // If clicking a different album
   if (currentlyPlayingId.value !== null && currentlyPlayingId.value !== id) {
     const oldIndex = albums.value.findIndex(a => a.id === currentlyPlayingId.value);
     const oldAudio = audioRefs.value[oldIndex];
@@ -67,7 +68,6 @@ const togglePlay = (id, index) => {
     }
   }
 
-  // Toggle play/pause for the clicked album
   if (isPlaying.value && currentlyPlayingId.value === id) {
     audio.pause();
     isPlaying.value = false;
@@ -84,8 +84,7 @@ const scrollContent = ref(null);
 let lenis;
 
 onMounted(() => {
-  // Attach 'ended' event listeners to reset state
-  audioRefs.value.forEach((audio, index) => {
+  audioRefs.value.forEach((audio) => {
     if (audio) {
       audio.onended = () => {
         isPlaying.value = false;
@@ -148,38 +147,16 @@ onMounted(() => {
 .title { font-size: 2.25rem; font-weight: 800; margin-bottom: 0.5rem; }
 .subtitle { font-family: serif; font-size: 1.125rem; color: #d1d5db; }
 
-.play-button {
+.play-button { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); width: 5rem; height: 5rem; background-color: rgba(255, 255, 255, 0.2); border-radius: 9999px; border: 2px solid rgba(255, 255, 255, 0.3); display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; opacity: 0; transition: all 0.4s ease; }
+.card:hover .play-button { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+.play-button:hover { background-color: rgba(255, 255, 255, 0.3); transform: translate(-50%, -50%) scale(1.1); }
+.play-button svg { width: 2.5rem; height: 2.5rem; margin-left: 5px; }
+.play-button:hover svg { filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)); }
+
+.playing-indicator {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.8);
-  width: 5rem; /* 80px */
-  height: 5rem;
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 9999px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  cursor: pointer;
-  opacity: 0;
-  transition: all 0.4s ease;
-}
-.card:hover .play-button {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-}
-.play-button:hover {
-  background-color: rgba(255, 255, 255, 0.3);
-  transform: translate(-50%, -50%) scale(1.1);
-}
-.play-button svg {
-  width: 2.5rem; /* 40px */
-  height: 2.5rem;
-  margin-left: 5px; /* Optical alignment for play icon */
-}
-.play-button:hover svg {
-  filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
+  bottom: 1.5rem;
+  right: 1.5rem;
+  opacity: 0.7;
 }
 </style>
