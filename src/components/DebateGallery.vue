@@ -5,12 +5,15 @@
       <!-- Static Header Content -->
       <div class="header-content">
         <div class="header-left">
-          <h2 class="main-heading">为什么辩论?</h2>
+          <h2 class="main-heading">WHY DEBATE?</h2>
         </div>
         <div class="header-right">
-          <p class="sub-heading">
-            辩论最大的意义不在于为自己的立场而辩，而在于当你抽到了你不认同的立场时，你如何而辩？你会一瞬间明白很多
-          </p>
+          <router-link to="/why-we-debate" class="sub-heading-link">
+            <p class="sub-heading">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </p>
+            <span class="read-more">深入阅读 &rarr;</span>
+          </router-link>
         </div>
       </div>
 
@@ -40,13 +43,11 @@ import { ref, onMounted, onUnmounted } from 'vue';
 import Lenis from 'lenis';
 import PlayingIcon from './PlayingIcon.vue';
 
-// --- ASSET IMPORTS ---
 import moneyDebateImg from '@/assets/debategallery/金钱辩.png';
 import moneyDebateAudio from '@/assets/debategallery/金钱辩.MP3';
 
-// --- DATA ---
 const albums = ref([
-  { id: 1, title: '金钱辩', subtitle: '金钱是不是万恶之源？', image: moneyDebateImg, audio: moneyDebateAudio },
+  { id: 1, title: '金钱辩', subtitle: '金钱是否把人异化了', image: moneyDebateImg, audio: moneyDebateAudio },
   { id: 2, title: '科技辩', subtitle: '科技发展是否会取代人类思考', image: 'https://placehold.co/600x600/1f2937/ffffff?text=Tech', audio: null },
   { id: 3, title: '人性辩', subtitle: '人性本善还是性本恶', image: 'https://placehold.co/600x600/374151/ffffff?text=Humanity', audio: null },
   { id: 4, title: '环保辩', subtitle: '环保是个人责任还是政府责任', image: 'https://placehold.co/600x600/4b5563/ffffff?text=Eco', audio: null },
@@ -56,7 +57,6 @@ const albums = ref([
   { id: 8, title: '未来辩', subtitle: '人工智能能否拥有真正的创造力', image: 'https://placehold.co/600x600/fde68a/111827?text=Future', audio: null },
 ]);
 
-// --- AUDIO LOGIC ---
 const audioRefs = ref([]);
 const currentlyPlayingId = ref(null);
 const isPlaying = ref(false);
@@ -76,7 +76,6 @@ const togglePlay = (id, index) => {
   }
 };
 
-// --- SCROLLING LOGIC ---
 const galleryWrapper = ref(null);
 const scrollContent = ref(null);
 let lenis;
@@ -118,30 +117,16 @@ onMounted(() => {
 .sticky-container { position: sticky; top: 0; height: 100vh; overflow: hidden; display: flex; align-items: center; }
 
 /* --- Header Styles --- */
-.header-content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 3rem 4rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  z-index: 10;
-  pointer-events: none; /* Allows clicking through to the cards */
-}
-.main-heading {
-  font-size: 2.25rem; /* text-4xl */
-  font-weight: 800;
-  color: white;
-}
-.sub-heading {
-  font-family: serif;
-  font-size: 1.125rem;
-  color: #9ca3af; /* text-gray-400 */
-  max-width: 24rem; /* 384px */
-  text-align: right;
-}
+.header-content { position: absolute; top: 0; left: 0; width: 100%; padding: 3rem 4rem; display: flex; justify-content: space-between; align-items: flex-start; z-index: 10; }
+.header-left { pointer-events: none; } /* Left side is not clickable */
+.header-right { pointer-events: all; } /* Right side IS clickable */
+
+.main-heading { font-size: 2.25rem; font-weight: 800; color: white; }
+.sub-heading-link { text-decoration: none; color: inherit; }
+.sub-heading { font-family: serif; font-size: 1.125rem; color: #9ca3af; max-width: 24rem; text-align: right; margin-bottom: 0.5rem; transition: color 0.3s ease; }
+.read-more { display: block; text-align: right; font-weight: 600; color: white; opacity: 0; transition: opacity 0.3s ease; }
+.sub-heading-link:hover .read-more { opacity: 1; }
+.sub-heading-link:hover .sub-heading { color: white; }
 
 /* --- Scrolling Content Styles --- */
 .scroll-content { display: flex; align-items: center; gap: 4rem; padding: 0 8rem; }
@@ -154,7 +139,7 @@ onMounted(() => {
 .subtitle { font-family: serif; font-size: 1.125rem; color: #d1d5db; }
 
 /* --- Play Button & Indicator Styles --- */
-.play-button { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); width: 5rem; height: 5rem; background-color: rgba(255, 255, 255, 0.2); border-radius: 9999px; border: 2px solid rgba(255, 255, 255, 0.3); display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; opacity: 0; transition: all 0.4s ease; pointer-events: all; /* Make button clickable */ }
+.play-button { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); width: 5rem; height: 5rem; background-color: rgba(255, 255, 255, 0.2); border-radius: 9999px; border: 2px solid rgba(255, 255, 255, 0.3); display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; opacity: 0; transition: all 0.4s ease; pointer-events: all; }
 .card:hover .play-button { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 .play-button:hover { background-color: rgba(255, 255, 255, 0.3); transform: translate(-50%, -50%) scale(1.1); }
 .play-button svg { width: 2.5rem; height: 2.5rem; margin-left: 5px; }
