@@ -1,5 +1,116 @@
-# Vue 3 + Vite
+# 辩论队网站项目
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+本项目为辩队官网源码
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+---
+
+## 待办事项 (To-Do List)
+
+- [ ] **“赛场风采”模块 (`src/components/DebateGallery.vue`)**
+    - [ ] 收集音频素材
+    - [ ] 撰写主副标题
+    - [ ] 填充卡片画廊的图片和说明文字
+
+- [ ] **“我们为何而辩”文章页 (`src/views/WhyWeDebate.vue`)**
+    - [ ] 撰写“Why We Debate”文章内容
+
+- [ ] **“辩队家庭”模块 (`src/components/TeamCulture.vue`)**
+    - [ ] 对原始图片素材进行分组
+    - [ ] 为每组图片撰写对应的叙述文案
+    - [ ] 填充处理好的图文素材
+    - [ ] 页面样式调整，目前感觉太散了
+
+- [ ] **“成员”模块 (`src/components/TeamMembers.vue`)**
+    - [ ] 收集并填写成员照片
+    - [ ] 收集并填写获奖情况
+    - [ ] 收集往届优秀学长姐信息
+    - [ ] 制作往届优秀学长姐页面并填写
+
+- [ ] **“加入我们”模块 (`src/components/JoinUs.vue`)**
+    - [ ] 选择合适的艺术字体
+    - [ ] 撰写页面文本
+    - [ ] 制作并关联腾讯文档报名外链
+
+---
+
+## 本地开发环境设置
+
+请遵循以下步骤在本地运行本项目。
+
+**1. 克隆仓库**
+```bash
+git clone [仓库的Git地址]
+```
+
+**2. 进入项目目录**
+```bash
+cd debater
+```
+
+**3. 安装依赖**
+此命令将下载项目运行所需的所有软件包。
+```bash
+npm install
+```
+
+**4. 启动开发服务器**
+此命令将在本地启动一个开发服务器，通常地址为 `http://localhost:5173`。浏览器将自动打开此页面。
+```bash
+npm run dev
+```
+项目支持热重载，任何代码修改保存后，浏览器中的页面都将自动刷新。
+
+---
+
+## 项目结构指南
+
+大部分的内容修改都将在 `src` 目录下进行。
+
+### 文件位置
+
+- **`src/views/`**: 包含主页面组件。
+  - `Home.vue`: 网站首页，负责组装各个模块组件。
+  - `WhyWeDebate.vue`: “我们为何而辩”的文章页面。
+
+- **`src/components/`**: 包含页面中可复用的模块。大部分内容编辑将在这里进行。
+  - `DebateGallery.vue`: “赛场风采”模块，包含标题、音频和辩题卡片。
+  - `TeamMembers.vue`: 用于编辑队员介绍。
+  - `TeamCulture.vue`: 用于编辑团队文化（“辩队家庭”）部分的图文。
+  - `JoinUs.vue`: 用于编辑“加入我们”部分的文案和联系信息。
+
+### 资源文件位置
+
+- **`public/`**: 用于存放全局静态资源，如网站的 Logo (`logo.png`)。此目录中的文件会直接被部署到网站根目录。
+- **`src/assets/`**: 用于存放在 Vue 组件内部使用的资源，如成员照片、活动照片等。建议在此目录下创建子目录以进行有条理的组织 (例如: `src/assets/members`, `src/assets/gallery`)。
+
+---
+
+## 协作约定
+
+为保持项目一致性，请遵循以下约定。
+
+### 1. 提交信息 (Commit Message)
+
+在提交代码时，请在提交信息前添加一个“类型”前缀，以说明本次提交的内容。
+
+- **`docs`: 改文案**
+  - **用途**: 所有文案、标题、介绍的修改。
+  - **示例**: `docs: 更新“辩队家庭”部分的叙述文案`
+
+- **`chore`: 管图片**
+  - **用途**: 管理图片资源，包括添加、替换或删除图片文件。
+  - **示例**: `chore: 添加五张新的成员照片`
+
+- **`fix`: 改问题**
+  - **用途**: 修复问题或优化调整，例如修正样式错乱、调整间距等。
+  - **示例**: `fix: 调整成员介绍页的图片间距`
+
+- **`feat`: 加功能**
+  - **用途**: 添加新的功能、组件或页面 (主要由开发人员使用)。
+  - **示例**: `feat: 创建“赛场风采”图片画廊`
+
+### 2. 文件命名
+
+对于新添加的资源文件（如图片），请使用具有描述性的小写英文或拼音命名，并用连字符 `-` 分隔单词。
+*示例: `zhangsan-avatar.png`, `team-building-2025.jpg`。*
+这有助于避免在不同操作系统上可能出现的文件路径问题。

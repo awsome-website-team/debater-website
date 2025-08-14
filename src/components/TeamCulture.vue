@@ -1,5 +1,3 @@
-
-
 <template>
   <div class="team-culture-container">
     <!-- Left Column: Scrollable Text Content -->
@@ -27,9 +25,9 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 
 // --- ASSET IMPORTS ---
-import teamBuilding01 from '@/assets/family/第一次团建01.jpg';
-import teamBuilding02 from '@/assets/family/第一次团建02.jpg';
-import teamBuilding03 from '@/assets/family/第一次团建03.jpg';
+import teamBuilding01 from '@/assets/family/first-team-building-01.jpg';
+import teamBuilding02 from '@/assets/family/first-team-building-02.jpg';
+import teamBuilding03 from '@/assets/family/first-team-building-03.jpg';
 
 // --- COMPONENT DATA ---
 const chapters = ref([

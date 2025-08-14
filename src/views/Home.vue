@@ -15,7 +15,7 @@
         <div class="lg:col-span-5  self-end w-full">
           <div class="aspect-w-16 aspect-h-9 bg-gray-800 rounded-lg overflow-hidden">
             <img 
-              src="@/assets/主视觉图.jpg" 
+              src="@/assets/hero-image.jpg" 
               alt="Placeholder for visual content"
               class="w-full h-full object-cover"
             />

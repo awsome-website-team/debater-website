@@ -43,8 +43,8 @@ import { ref, onMounted, onUnmounted } from 'vue';
 import Lenis from 'lenis';
 import PlayingIcon from './PlayingIcon.vue';
 
-import moneyDebateImg from '@/assets/debategallery/金钱辩.png';
-import moneyDebateAudio from '@/assets/debategallery/金钱辩.MP3';
+import moneyDebateImg from '@/assets/debategallery/money-debate.png';
+import moneyDebateAudio from '@/assets/debategallery/money-debate.mp3';
 
 const albums = ref([
   { id: 1, title: '金钱辩', subtitle: '金钱是否把人异化了', image: moneyDebateImg, audio: moneyDebateAudio },
