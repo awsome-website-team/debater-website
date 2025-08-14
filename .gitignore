@@ -12,7 +12,6 @@ dist
 dist-ssr
 *.local
 bbg/
-src/assets
 
 
 # Editor directories and files
@@ -22,6 +21,7 @@ src/assets
 .DS_Store
 *.suo
 *.ntvs*
-*.njsproj
+.njsproj
 *.sln
 *.sw?
+GEMINI.md
