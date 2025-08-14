@@ -1,21 +1,21 @@
 <template>
   <div class="team-culture-container">
-    <!-- Left Column: Sticky Text Content -->
+    <!-- Left Column: Scrollable Text Content -->
     <div class="text-column">
-      <div class="sticky-text-wrapper">
-        <transition name="fade" mode="out-in">
-          <div :key="activeChapterIndex">
-            <h3 class="chapter-title">{{ chapters[activeChapterIndex].title }}</h3>
-            <p class="chapter-description">{{ chapters[activeChapterIndex].description }}</p>
-          </div>
-        </transition>
+      <div class="spacer" style="height: 30vh;"></div>
+      <div v-for="(chapter, index) in chapters" :key="index" class="chapter" :ref="el => chapterRefs[index] = el">
+        <h3 class="chapter-title">{{ chapter.title }}</h3>
+        <p class="chapter-description">{{ chapter.description }}</p>
       </div>
+      <div class="spacer" style="height: 40vh;"></div>
     </div>
 
-    <!-- Right Column: Scrollable Image Gallery -->
+    <!-- Right Column: Sticky Image Showcase -->
     <div class="gallery-column">
-      <div v-for="(chapter, index) in chapters" :key="index" class="image-chapter" :ref="el => chapterRefs[index] = el">
-        <img v-for="(image, imgIndex) in chapter.images" :key="imgIndex" :src="image" :alt="`${chapter.title} image ${imgIndex + 1}`" class="gallery-image">
+      <div class="sticky-image-wrapper">
+        <transition name="fade" mode="out-in">
+          <img :key="currentImage" :src="currentImage" alt="Team activity" class="showcase-image">
+        </transition>
       </div>
     </div>
   </div>
@@ -55,21 +55,58 @@ const chapters = ref([
 
 // --- INTERACTION LOGIC ---
 const chapterRefs = ref([]);
+const currentImage = ref(chapters.value[0].images[0]);
 const activeChapterIndex = ref(0);
 let observer;
+
+const handleScroll = () => {
+  const chapterEl = chapterRefs.value[activeChapterIndex.value];
+  if (!chapterEl) return;
+
+  const images = chapters.value[activeChapterIndex.value].images;
+  if (!images || images.length <= 1) return;
+
+  const rect = chapterEl.getBoundingClientRect();
+  
+  // Define the "active" zone for scrolling as the element's height, starting from when its top hits the viewport's vertical center.
+  const triggerPoint = window.innerHeight * 0.5;
+  const scrollDistance = triggerPoint - rect.top;
+  const totalScrollHeightForChapter = rect.height;
+
+  // Calculate progress (from 0 to 1)
+  let progress = scrollDistance / totalScrollHeightForChapter;
+  progress = Math.max(0, Math.min(1, progress)); // Clamp between 0 and 1
+
+  // Map progress to an image index
+  const imageCount = images.length;
+  const imageIndex = Math.floor(progress * imageCount);
+  const clampedIndex = Math.max(0, Math.min(imageCount - 1, imageIndex));
+
+  // Update the current image only if it has changed
+  if (currentImage.value !== images[clampedIndex]) {
+    currentImage.value = images[clampedIndex];
+  }
+};
 
 onMounted(() => {
   const options = {
     root: null,
-    rootMargin: '-50% 0px -50% 0px', // Trigger when the element is in the vertical center
+    rootMargin: '-50% 0px -50% 0px', // Trigger when the element is at the vertical center of the viewport
     threshold: 0
   };
 
   observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        const index = chapterRefs.value.indexOf(entry.target);
-        activeChapterIndex.value = index;
+        const index = chapterRefs.value.findIndex(ref => ref === entry.target);
+        if (index !== -1) {
+          activeChapterIndex.value = index;
+          // When a new chapter becomes active, immediately set its first image.
+          // The scroll handler will manage subsequent images.
+          if (chapters.value[index].images && chapters.value[index].images.length > 0) {
+            currentImage.value = chapters.value[index].images[0];
+          }
+        }
       }
     });
   }, options);
@@ -77,10 +114,13 @@ onMounted(() => {
   chapterRefs.value.forEach(ref => {
     if(ref) observer.observe(ref);
   });
+
+  window.addEventListener('scroll', handleScroll);
 });
 
 onUnmounted(() => {
   if(observer) observer.disconnect();
+  window.removeEventListener('scroll', handleScroll);
 });
 </script>
 
@@ -88,72 +128,59 @@ onUnmounted(() => {
 .team-culture-container {
   display: flex;
   min-height: 100vh;
-  background-color: #f8fafc; /* slate-50 */
+  background-color: #f8fafc;
 }
-
-/* --- Left Sticky Column --- */
 .text-column {
   width: 50%;
-  position: relative; /* For child positioning */
+  padding: 0 4rem;
 }
-
-.sticky-text-wrapper {
+.chapter {
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #0f172a;
+}
+.chapter-title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 2rem;
+}
+.chapter-description {
+  font-family: serif;
+  font-size: 1.25rem;
+  line-height: 1.75;
+  color: #475569;
+  max-width: 36rem;
+}
+.gallery-column {
+  width: 50%;
+  position: relative;
+}
+.sticky-image-wrapper {
   position: sticky;
   top: 0;
   height: 100vh;
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  padding: 0 4rem; /* 64px */
-  color: #0f172a; /* slate-900 */
+  padding: 4rem;
 }
-
-.chapter-title {
-  font-size: 3rem; /* text-5xl */
-  font-weight: 800;
-  margin-bottom: 2rem; /* 32px */
-}
-
-.chapter-description {
-  font-family: serif;
-  font-size: 1.25rem; /* text-xl */
-  line-height: 1.75;
-  color: #475569; /* slate-600 */
-  max-width: 36rem; /* 576px */
-}
-
-/* --- Right Scrolling Column --- */
-.gallery-column {
-  width: 50%;
-}
-
-.image-chapter {
-  padding: 5vh 2rem; /* Add some vertical and horizontal space */
-  display: flex;
-  flex-direction: column;
-  gap: 2rem; /* Space between images in a chapter */
-}
-
-.gallery-image {
-  width: 100%;
+.showcase-image {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
   height: auto;
-  border-radius: 0.75rem; /* 12px */
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  object-fit: contain;
+  border-radius: 0.75rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
-
-/* --- Transition Styles --- */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition: opacity 0.6s ease;
 }
-
-.fade-enter-from {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
+.fade-enter-from,
 .fade-leave-to {
   opacity: 0;
-  transform: translateY(-20px);
 }
 </style>
