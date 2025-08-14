@@ -6,7 +6,7 @@
 
 ## 待办事项 (To-Do List)
 
-- [ ] **“赛场风采”模块 (`src/components/DebateGallery.vue`)**
+- [ ] **“辩论介绍”模块 (`src/components/DebateGallery.vue`)**
     - [ ] 收集音频素材
     - [ ] 撰写主副标题
     - [ ] 填充卡片画廊的图片和说明文字
