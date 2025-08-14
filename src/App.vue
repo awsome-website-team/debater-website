@@ -5,7 +5,7 @@
       class="fixed top-0 left-0 right-0 z-50 transition-colors duration-500"
       :class="{ 'text-gray-900': isDarkText, 'text-white': !isDarkText }"
     >
-      <nav class="container mx-auto px-6 py-4 flex justify-end items-center">
+      <nav class="px-6 py-4 flex justify-end items-center">
         <div class="space-x-6 text-sm">
           <router-link to="/#culture" class="hover:opacity-75 transition-opacity duration-300">文化</router-link>
           <router-link to="/#team" class="hover:opacity-75 transition-opacity duration-300">团队</router-link>

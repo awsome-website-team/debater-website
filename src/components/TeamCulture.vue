@@ -1,23 +1,23 @@
-<template>
-  <div id="light-bg-section" class="page-container">
-    <div class="team-culture-container">
-      <!-- Left Column: Scrollable Text Content -->
-      <div class="text-column">
-        <div class="spacer" style="height: 10vh;"></div>
-        <div v-for="(chapter, index) in chapters" :key="index" class="chapter" :ref="el => chapterRefs[index] = el">
-          <h3 class="chapter-title">{{ chapter.title }}</h3>
-          <p class="chapter-description">{{ chapter.description }}</p>
-        </div>
-        <div class="spacer" style="height: 40vh;"></div>
-      </div>
 
-      <!-- Right Column: Sticky Image Showcase -->
-      <div class="gallery-column">
-        <div class="sticky-image-wrapper">
-          <transition name="fade" mode="out-in">
-            <img :key="currentImage" :src="currentImage" alt="Team activity" class="showcase-image">
-          </transition>
-        </div>
+
+<template>
+  <div class="team-culture-container">
+    <!-- Left Column: Scrollable Text Content -->
+    <div class="text-column">
+      <div class="spacer" style="height: 30vh;"></div>
+      <div v-for="(chapter, index) in chapters" :key="index" class="chapter" :ref="el => chapterRefs[index] = el">
+        <h3 class="chapter-title">{{ chapter.title }}</h3>
+        <p class="chapter-description">{{ chapter.description }}</p>
+      </div>
+      <div class="spacer" style="height: 40vh;"></div>
+    </div>
+
+    <!-- Right Column: Sticky Image Showcase -->
+    <div class="gallery-column">
+      <div class="sticky-image-wrapper">
+        <transition name="fade" mode="out-in">
+          <img :key="currentImage" :src="currentImage" alt="Team activity" class="showcase-image">
+        </transition>
       </div>
     </div>
   </div>
@@ -70,17 +70,21 @@ const handleScroll = () => {
 
   const rect = chapterEl.getBoundingClientRect();
   
+  // Define the "active" zone for scrolling as the element's height, starting from when its top hits the viewport's vertical center.
   const triggerPoint = window.innerHeight * 0.5;
   const scrollDistance = triggerPoint - rect.top;
   const totalScrollHeightForChapter = rect.height;
 
+  // Calculate progress (from 0 to 1)
   let progress = scrollDistance / totalScrollHeightForChapter;
-  progress = Math.max(0, Math.min(1, progress));
+  progress = Math.max(0, Math.min(1, progress)); // Clamp between 0 and 1
 
+  // Map progress to an image index
   const imageCount = images.length;
   const imageIndex = Math.floor(progress * imageCount);
   const clampedIndex = Math.max(0, Math.min(imageCount - 1, imageIndex));
 
+  // Update the current image only if it has changed
   if (currentImage.value !== images[clampedIndex]) {
     currentImage.value = images[clampedIndex];
   }
@@ -89,7 +93,7 @@ const handleScroll = () => {
 onMounted(() => {
   const options = {
     root: null,
-    rootMargin: '-50% 0px -50% 0px',
+    rootMargin: '-50% 0px -50% 0px', // Trigger when the element is at the vertical center of the viewport
     threshold: 0
   };
 
@@ -99,6 +103,8 @@ onMounted(() => {
         const index = chapterRefs.value.findIndex(ref => ref === entry.target);
         if (index !== -1) {
           activeChapterIndex.value = index;
+          // When a new chapter becomes active, immediately set its first image.
+          // The scroll handler will manage subsequent images.
           if (chapters.value[index].images && chapters.value[index].images.length > 0) {
             currentImage.value = chapters.value[index].images[0];
           }
@@ -121,17 +127,75 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.page-container {
-  background-color: #f8fafc;
-  padding: 0 4rem; /* Adjusted padding */
-}
-
 .team-culture-container {
   display: flex;
   min-height: 100vh;
+  background-color: #f8fafc;
 }
 .text-column {
   width: 50%;
+  padding: 0 4rem;
+}
+.chapter {
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #0f172a;
+}
+.chapter-title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 2rem;
+}
+.chapter-description {
+  font-family: serif;
+  font-size: 1.25rem;
+  line-height: 1.75;
+  color: #475569;
+  max-width: 36rem;
+}
+.gallery-column {
+  width: 50%;
+  position: relative;
+}
+.sticky-image-wrapper {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem;
+}
+.showcase-image {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 0.75rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.6s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
+
+<style scoped>
+.team-culture-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8fafc;
+}
+.text-column {
+  width: 50%;
+  padding: 0 4rem;
 }
 .chapter {
   min-height: 90vh;
