@@ -23,4 +23,4 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         push: true
-        tags: bbg/debate-website:lateset
+        tags: jadeproheshan/debatewebsite:v0.9
