@@ -17,10 +17,10 @@
       <div class="gallery-column">
         <div class="gallery-content-wrapper">
           <div v-for="(chapter, index) in chapters" :key="index" class="image-group" :data-index="index">
-            <div v-for="image in chapter.images" :key="image" 
-                 class="image-placeholder" 
-                 :style="{ backgroundImage: `url('${image}')` }">
-            </div>
+            <img v-for="image in chapter.images" :key="image" 
+                 :src="image"
+                 alt="Team culture image"
+                 class="image-placeholder" />
           </div>
         </div>
       </div>
@@ -39,7 +39,7 @@ const chapters = [
     description: '每周的例会，不仅是唇枪舌战的演练场，更是逻辑思维的健身房。我们在这里剖析辩题，打磨论点，学习如何清晰而有力地表达。',
     images: [
       'https://placehold.co/600x800/374151/ffffff?text=Training+1',
-      'https://placehold.co/600x800/4b5563/ffffff?text=Training+2'
+      'https://placehold.co/600x400/4b5563/ffffff?text=Training+2'
     ]
   },
   {
@@ -55,8 +55,8 @@ const chapters = [
     description: '辩论之外，我们是会一起聚餐、出游、分享生活的朋友。这份情谊，是辩论带给我们最宝贵的财富之一。',
     images: [
       'https://placehold.co/600x800/9ca3af/ffffff?text=Leisure+1',
-      'https://placehold.co/600x800/d1d5db/111827?text=Leisure+2',
-      'https://placehold.co/600x800/4b5563/ffffff?text=Leisure+3'
+      'https://placehold.co/600x400/d1d5db/111827?text=Leisure+2',
+      'https://placehold.co/600x900/4b5563/ffffff?text=Leisure+3'
     ]
   }
 ];
@@ -115,7 +115,13 @@ onUnmounted(() => {
   padding-bottom: 4rem;
 }
 .image-group { display: flex; flex-direction: column; gap: 2rem; position: relative; }
-.image-placeholder { width: 100%; padding-bottom: 125%; background-size: cover; background-position: center; border-radius: 0.75rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); }
+.image-placeholder {
+  width: 100%;
+  height: auto; /* Maintain aspect ratio */
+  display: block; /* Remove extra space below image */
+  border-radius: 0.75rem;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+}
 
 /* --- Transition --- */
 .fade-enter-active, .fade-leave-active { transition: opacity 0.5s ease; }
