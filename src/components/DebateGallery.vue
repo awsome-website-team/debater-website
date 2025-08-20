@@ -145,4 +145,50 @@ onMounted(() => {
 .play-button svg { width: 2.5rem; height: 2.5rem; margin-left: 5px; }
 .play-button:hover svg { filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)); }
 .playing-indicator { position: absolute; bottom: 1.5rem; right: 1.5rem; opacity: 0.7; }
+
+/* --- Responsive Styles for Mobile --- */
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column; /* Stack header items vertically */
+    align-items: flex-start; /* Align to the left */
+    padding: 2rem 1.5rem; /* Reduce padding */
+    gap: 1rem; /* Add some space between title and subtitle */
+  }
+
+  .header-right {
+    width: 100%; /* Allow it to take full width */
+  }
+
+  .main-heading {
+    font-size: 1.75rem; /* Slightly smaller title */
+  }
+
+  .sub-heading {
+    max-width: 100%; /* Remove max-width constraint */
+    text-align: left; /* Align text to the left */
+    font-size: 1rem; /* Slightly smaller font */
+  }
+
+  .read-more {
+    text-align: left; /* Align "read more" to the left */
+  }
+
+  .scroll-content {
+    padding: 0 1.5rem; /* Reduce padding for the cards container */
+    gap: 1.5rem; /* Reduce gap between cards */
+  }
+
+  .card {
+    width: 18rem; /* Smaller cards */
+    height: 18rem;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+}
 </style>

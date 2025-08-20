@@ -1,71 +1,66 @@
-# Project Overview
+# 项目概览
 
-This is a modern, single-page application for a university debate team, designed to be visually appealing and attract new members.
+这是一个为大学辩论队设计的现代化单页应用，旨在视觉上吸引并招募新成员。
 
-It is built using **Vue.js 3** and the **Vite** build tool, following modern best practices like the Composition API with `<script setup>`. The project is structured as a multi-page application within a single-page context, using **Vue Router** for navigation between different views like the Homepage and a "Why We Debate" article page.
+它采用 **Vue.js 3** 和 **Vite** 构建工具构建，遵循了现代最佳实践，例如使用 `<script setup>` 的组合式 API。该项目在单页应用的上下文中构建为多页应用，使用 **Vue Router** 在不同视图（如主页和“我们为何辩论”文章页面）之间进行导航。
 
-Styling is handled by the **Tailwind CSS** utility-first framework. The project also incorporates libraries like **Lenis** for a smooth, high-quality scrolling experience.
+样式由 **Tailwind CSS** 这一实用工具优先的框架处理。项目还集成了像 **Lenis** 这样的库，以提供流畅、高质量的滚动体验。
 
-# Building and Running
-
-This project is managed with `npm`. The following scripts are essential for development:
-
-*   **Install dependencies:**
-    ```bash
-    npm install
     ```
 
-*   **Run the development server:**
-    Starts a local server with hot-reloading.
-    ```bash
-    npm run dev
-    ```
+# 开发约定
 
-*   **Build for production:**
-    Compiles and minifies the application for deployment.
-    ```bash
-    npm run build
-    ```
-
-*   **Preview the production build:**
-    Runs a local server to preview the production-ready application.
-    ```bash
-    npm run preview
-    ```
-
-# Development Conventions
-
-*   **Component Structure:** The project separates components by their role:
-    *   `src/views/`: Contains top-level components that correspond to a page/route (e.g., `Home.vue`).
-    *   `src/components/`: Contains reusable, partial components that are imported into views (e.g., `DebateGallery.vue`, `TeamMembers.vue`).
-*   **Path Alias:** A convenient path alias `@` is configured in `vite.config.js` to point directly to the `src/` directory. Always use this for absolute imports within the project.
+*   **组件结构：** 项目按角色分离组件：
+    *   `src/views/`：包含与页面/路由对应的顶级组件（例如 `Home.vue`）。
+    *   `src/components/`：包含被导入到视图中的可复用、局部组件（例如 `DebateGallery.vue`, `TeamMembers.vue`）。
+*   **路径别名：** 在 `vite.config.js` 中配置了一个方便的路径别名 `@`，直接指向 `src/` 目录。在项目中应始终使用此别名进行绝对路径导入。
     ```javascript
-    // Example
+    // 示例
     import Home from '@/views/Home.vue';
     import MyComponent from '@/components/MyComponent.vue';
     ```
-*   **Styling:** All styling should be done using Tailwind CSS utility classes directly in the `<template>` of Vue components. Global styles are located in `src/style.css`.
-*   **Routing:** All application routes are defined in `src/router/index.js`. To add a new page, you must create a new view component in `src/views` and add a corresponding route object to the `routes` array.
+*   **样式：** 所有样式都应直接在 Vue 组件的 `<template>` 中使用 Tailwind CSS 工具类完成。全局样式位于 `src/style.css`。
+*   **路由：** 所有应用路由都在 `src/router/index.js` 中定义。要添加新页面，你必须在 `src/views` 中创建一个新的视图组件，并在 `routes` 数组中添加一个相应的路由对象。
 
 ---
-# Session Summary (2025-08-15)
+# 会话摘要 (2025-08-15)
 
-- **`TeamCulture.vue` Component Refactor:**
-  - Replaced the time-based image carousel with a scroll-driven animation. The image displayed in the right-hand gallery is now directly mapped to the user's scroll progress through the corresponding text chapter on the left.
-  - This was achieved by removing the `setInterval` logic and implementing a `scroll` event listener that calculates the scroll progress within the active chapter (identified by an `IntersectionObserver`).
+- **`TeamCulture.vue` 组件重构：**
+  - 将基于时间的图片轮播替换为滚动驱动的动画。现在，右侧画廊中显示的图片与用户在左侧相应文本章节中的滚动进度直接映射。
+  - 这是通过移除 `setInterval` 逻辑并实现一个 `scroll` 事件监听器来完成的，该监听器计算活动章节（由 `IntersectionObserver` 识别）内的滚动进度。
 
-- **Navigation Bar Enhancement:**
-  - Addressed an issue where the navigation bar's text became invisible against light-colored backgrounds.
-  - Implemented a dynamic color inversion solution:
-    - The global `App.vue` now contains an `IntersectionObserver` that watches for a specific ID (`#light-bg-section`).
-    - When the header intersects with an element carrying this ID (like `TeamCulture.vue`), it dynamically changes the navigation text and button colors to a dark theme for better visibility.
+- **导航栏增强：**
+  - 解决了导航栏文本在浅色背景下变得不可见的问题。
+  - 实现了一个动态颜色反转方案：
+    - 全局的 `App.vue` 现在包含一个 `IntersectionObserver`，用于监视一个特定的 ID (`#light-bg-section`)。
+    - 当头部与带有此 ID 的元素（如 `TeamCulture.vue`）相交时，它会动态地将导航文本和按钮颜色更改为深色主题，以获得更好的可见性。
 
-- **Layout & Style Adjustments:**
-  - Experimented with full-width vs. container-based layouts for the `Home.vue` hero section to improve visual consistency with other page sections.
-  - Finalized a hybrid approach: The main content on the homepage remains within a centered container for readability, while the main navigation bar was adjusted to be full-width, allowing its content to align to the far right of the viewport.
+- **布局与样式调整：**
+  - 试验了 `Home.vue` 英雄区域的全宽布局与基于容器的布局，以提高与其他页面部分的视觉一致性。
+  - 最终确定了一种混合方法：主页上的主要内容保持在居中容器内以保证可读性，而主导航栏则调整为全宽，使其内容可以对齐到视口的远右侧。
 
-- **Development Environment Troubleshooting:**
-  - Investigated and resolved an issue where the IDE was incorrectly reporting syntax errors in `.vue` files after more complex logic was added.
-  - The root cause was identified as a file corruption issue (a duplicated `<template>` tag) caused by a faulty `replace` tool operation.
-  - Corrected the corrupted file using `write_file` and cleaned up unnecessary `tsconfig.json` and `typescript` dependencies that were added during troubleshooting.
-  - **Action Item:** Per user instruction, the `replace` tool will be avoided in favor of `write_file` for future file modifications to ensure integrity.
+- **开发环境故障排查：**
+  - 调查并解决了一个问题，即在添加了更复杂的逻辑后，IDE 错误地报告 `.vue` 文件中的语法错误。
+  - 根本原因被确定为文件损坏问题（一个重复的 `<template>` 标签），这是由一个有缺陷的 `replace` 工具操作引起的。
+  - 使用 `write_file` 纠正了损坏的文件，并清除了在故障排查期间添加的不必要的 `tsconfig.json` 和 `typescript` 依赖。
+  - **行动项：** 根据用户指示，未来的文件修改将避免使用 `replace` 工具，转而使用 `write_file` 以确保文件完整性。
+---
+# 会话摘要 (2025-08-14)
+
+- **项目交接准备：**
+  - 主要目标是为与非开发人员队友的协作做准备。这涉及大量的文档编写和代码重构。
+
+- **`README.md` 大修：**
+  - 为新贡献者创建了一份全面的指南。
+  - 添加了一个详细的、对初学者友好的工作流程，涵盖了初始设置、日常分支、提交和创建拉取请求。
+  - 包含了一个项目范围的待办事项列表。
+  - 建立了一个简化的“约定式提交”规范（`docs`, `chore`, `fix`, `feat`），以标准化提交消息。
+
+- **资产管理和重构：**
+  - 通过修改 `.gitignore`，将 `src/assets` 目录纳入 Git 版本控制。
+  - 系统地将所有路径中包含中文字符的资产重命名为使用英文/拼音，以防止潜在的构建和部署问题。
+  - 更新了多个组件（`DebateGallery.vue`, `Home.vue`, `TeamCulture.vue`）中的所有代码引用，以反映新的资产路径，解决了构建错误。
+
+- **协作工作流讨论：**
+  - 分析了两种常见协作模式的优缺点：在共享仓库中创建分支与复刻（forking）仓库。
+  - 结论是，共享仓库模型更简单，更适合本项目的上下文。更新后的 `README.md` 反映了这一工作流程。
