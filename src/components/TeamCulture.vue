@@ -30,6 +30,9 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
+import teambuilding1 from '@/assets/family/first-team-building-01.jpg'
+import teambuilding2 from '@/assets/family/first-team-building-02.jpg'
+import teambuilding3 from '@/assets/family/first-team-building-03.jpg'
 
 const activeChapterIndex = ref(0);
 
@@ -38,8 +41,9 @@ const chapters = [
     title: '第一章：日常训练',
     description: '每周的例会，不仅是唇枪舌战的演练场，更是逻辑思维的健身房。我们在这里剖析辩题，打磨论点，学习如何清晰而有力地表达。',
     images: [
-      'https://placehold.co/600x800/374151/ffffff?text=Training+1',
-      'https://placehold.co/600x400/4b5563/ffffff?text=Training+2'
+      teambuilding1,
+      teambuilding2,
+      teambuilding3
     ]
   },
   {
@@ -85,7 +89,7 @@ onUnmounted(() => {
 
 <style scoped>
 .team-culture-section { padding: 8rem 0; background-color: #f3f4f6; color: #111827; }
-.grid-container { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2rem; max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+.grid-container { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2rem; max-width: 1536px; margin: 0 auto; padding: 0 0; }
 
 /* --- Left Column --- */
 .text-column {
@@ -110,11 +114,11 @@ onUnmounted(() => {
 .gallery-content-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 4rem; /* Increased gap between image groups */
+  gap: 5rem; /* Increased gap between image groups */
   padding-top: 4rem; /* Add padding to create "breathing room" */
   padding-bottom: 4rem;
 }
-.image-group { display: flex; flex-direction: column; gap: 2rem; position: relative; }
+.image-group { display: flex; flex-direction: column; gap: 3rem; position: relative; }
 .image-placeholder {
   width: 100%;
   height: auto; /* Maintain aspect ratio */
