@@ -51,19 +51,19 @@ const activeFilter = ref('全部');
 
 const members = ref([
   // 24级 (8 members)
-  { id: 1, name: '张三', title: '队长', category: '24级', image: 'https://placehold.co/400x400/1f2937/ffffff?text=Z.S.' },
-  { id: 2, name: '李四', title: '一辩', category: '24级', image: 'https://placehold.co/400x400/374151/ffffff?text=L.S.' },
-  { id: 3, name: '王五', title: '二辩', category: '24级', image: 'https://placehold.co/400x400/4b5563/ffffff?text=W.W.' },
-  { id: 4, name: '赵六', title: '三辩', category: '24级', image: 'https://placehold.co/400x400/6b7280/ffffff?text=Z.L.' },
-  { id: 5, name: '队员A', title: '资料组', category: '24级', image: 'https://placehold.co/400x400/1f2937/ffffff?text=A' },
-  { id: 6, name: '队员B', title: '资料组', category: '24级', image: 'https://placehold.co/400x400/374151/ffffff?text=B' },
-  { id: 7, name: '队员C', title: '陪练', category: '24级', image: 'https://placehold.co/400x400/4b5563/ffffff?text=C' },
-  { id: 8, name: '队员D', title: '陪练', category: '24级', image: 'https://placehold.co/400x400/6b7280/ffffff?text=D' },
+  { id: 1, name: '林钰泽', title: '宝队', category: '24级', image: 'https://placehold.co/400x400/1f2937/ffffff?text=Z.S.' },
+  { id: 2, name: '龙晓磊', title: '队员', category: '24级', image: 'https://placehold.co/400x400/374151/ffffff?text=L.S.' },
+  { id: 3, name: '赵煦超', title: '队员', category: '24级', image: 'https://placehold.co/400x400/4b5563/ffffff?text=W.W.' },
+  { id: 4, name: '揭丽璐', title: '队员', category: '24级', image: 'https://placehold.co/400x400/6b7280/ffffff?text=Z.L.' },
+  { id: 5, name: '吴宇生', title: '队员', category: '24级', image: 'https://placehold.co/400x400/1f2937/ffffff?text=A' },
+  { id: 6, name: '吴杨蕊瑞', title: '队员', category: '24级', image: 'https://placehold.co/400x400/374151/ffffff?text=B' },
+  { id: 7, name: '阳泽怡', title: '队员', category: '24级', image: 'https://placehold.co/400x400/4b5563/ffffff?text=C' },
+  { id: 8, name: '杨涛', title: '队员', category: '24级', image: 'https://placehold.co/400x400/6b7280/ffffff?text=D' },
 
   // 23级 (8 members)
-  { id: 9, name: '孙七', title: '副队长', category: '23级', image: 'https://placehold.co/400x400/9ca3af/ffffff?text=S.Q.' },
-  { id: 10, name: '周八', title: '结辩', category: '23级', image: 'https://placehold.co/400x400/d1d5db/111827?text=Z.B.' },
-  { id: 11, name: '队员E', title: '一辩', category: '23级', image: 'https://placehold.co/400x400/9ca3af/ffffff?text=E' },
+  { id: 9, name: '廖弈杰', title: '鸟队', category: '23级', image: '/members/niao.jpg' },
+  { id: 10, name: '吴太源', title: '结辩', category: '23级', image: 'https://placehold.co/400x400/d1d5db/111827?text=Z.B.' },
+  { id: 11, name: '颜宏斌', title: '一辩', category: '23级', image: 'https://placehold.co/400x400/9ca3af/ffffff?text=E' },
   { id: 12, name: '队员F', title: '二辩', category: '23级', image: 'https://placehold.co/400x400/d1d5db/111827?text=F' },
   { id: 13, name: '队员G', title: '三辩', category: '23级', image: 'https://placehold.co/400x400/9ca3af/ffffff?text=G' },
   { id: 14, name: '队员H', title: '四辩', category: '23级', image: 'https://placehold.co/400x400/d1d5db/111827?text=H' },
@@ -86,10 +86,10 @@ const members = ref([
 ]);
 
 const honors = ref([
-  { id: 101, year: '2022', title: '“思辨之光”全国邀请赛 四强' },
-  { id: 102, year: '2021', title: '“信息杯”校内辩论赛 冠军' },
-  { id: 103, year: '2020', title: '“新国辩”世界辩论锦标赛 国际季军' },
-  { id: 104, year: '2019', title: '“捭阖杯”全国辩论挑战赛 亚军' },
+  { id: 101, year: '2024', title: '厦门大学“校赛” 八强' },
+  { id: 102, year: '2023', title: '厦门大学“新生赛” 八强' },
+  { id: 103, year: '2022', title: '厦门大学“新生赛” 四强' },
+  { id: 104, year: '2020', title: '厦门大学“新生赛” 亚军' },
 ]);
 
 // --- COMPUTED PROPERTIES ---
