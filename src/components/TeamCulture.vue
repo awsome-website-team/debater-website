@@ -1,247 +1,125 @@
 <template>
-  <div class="team-culture-container">
-    <!-- Left Column: Scrollable Text Content -->
-    <div class="text-column">
-      <div class="spacer" style="height: 30vh;"></div>
-      <div v-for="(chapter, index) in chapters" :key="index" class="chapter" :ref="el => chapterRefs[index] = el">
-        <h3 class="chapter-title">{{ chapter.title }}</h3>
-        <p class="chapter-description">{{ chapter.description }}</p>
+  <section id="culture" class="team-culture-section">
+    <div class="grid-container">
+      <!-- Left Column: Sticky Text Content -->
+      <div class="text-column">
+        <div class="text-content-wrapper">
+          <Transition name="fade" mode="out-in">
+            <div :key="activeChapterIndex">
+              <h2 class="chapter-title">{{ chapters[activeChapterIndex].title }}</h2>
+              <p class="chapter-description">{{ chapters[activeChapterIndex].description }}</p>
+            </div>
+          </Transition>
+        </div>
       </div>
-      <div class="spacer" style="height: 40vh;"></div>
-    </div>
 
-    <!-- Right Column: Sticky Image Showcase -->
-    <div class="gallery-column">
-      <div class="sticky-image-wrapper">
-        <transition name="fade" mode="out-in">
-          <img :key="currentImage" :src="currentImage" alt="Team activity" class="showcase-image">
-        </transition>
+      <!-- Right Column: Scrolling Image Gallery -->
+      <div class="gallery-column">
+        <div class="gallery-content-wrapper">
+          <div v-for="(chapter, index) in chapters" :key="index" class="image-group">
+            <div class="sentinel" :data-index="index"></div>
+            <div v-for="image in chapter.images" :key="image" 
+                 class="image-placeholder" 
+                 :style="{ backgroundImage: `url('${image}')` }">
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 
-// --- ASSET IMPORTS ---
-import teamBuilding01 from '@/assets/family/first-team-building-01.jpg';
-import teamBuilding02 from '@/assets/family/first-team-building-02.jpg';
-import teamBuilding03 from '@/assets/family/first-team-building-03.jpg';
-
-// --- COMPONENT DATA ---
-const chapters = ref([
-  {
-    title: '第一次团建',
-    description: '辩论不仅是赛场上的唇枪舌剑，更是生活中的温暖陪伴。在这里，我们一同分享知识，也一同分享笑语。每一次团建，都是为了让我们的心更近，让团队的凝聚力更强。',
-    images: [teamBuilding01, teamBuilding02, teamBuilding03]
-  },
-  {
-    title: '每周例会',
-    description: '固定的思维碰撞，是保持锋利最好的方式。我们在这里拆解辩题，构建论点，模拟攻防。这里是我们的思想健身房，汗水与灵感交织，每个人既是学生，也是老师。',
-    images: ['https://placehold.co/800x1000/334155/ffffff?text=Meeting+1', 'https://placehold.co/800x1200/475569/ffffff?text=Meeting+2']
-  },
-  {
-    title: '赛后复盘',
-    description: '无论胜负，复盘都是最宝贵的财富。我们在这里坦诚地剖析得失，不是为了指责，而是为了共同成长。每一次复盘，都让我们对辩论的理解，更深一层。',
-    images: ['https://placehold.co/800x1200/0f172a/ffffff?text=Review+1', 'https://placehold.co/800x1000/1e293b/ffffff?text=Review+2', 'https://placehold.co/800x1200/334155/ffffff?text=Review+3']
-  },
-  {
-    title: '年度大会',
-    description: '一年的总结，新篇的序章。我们在这里回顾过去一年的荣耀与汗水，嘉奖优秀的辩手，也为下一年的征程，描绘蓝图，凝聚共识。',
-    images: ['https://placehold.co/800x1200/475569/ffffff?text=Annual+1']
-  }
-]);
-
-// --- INTERACTION LOGIC ---
-const chapterRefs = ref([]);
-const currentImage = ref(chapters.value[0].images[0]);
 const activeChapterIndex = ref(0);
+
+const chapters = [
+  {
+    title: '第一章：日常训练',
+    description: '每周的例会，不仅是唇枪舌战的演练场，更是逻辑思维的健身房。我们在这里剖析辩题，打磨论点，学习如何清晰而有力地表达。',
+    images: [
+      'https://placehold.co/600x800/374151/ffffff?text=Training+1',
+      'https://placehold.co/600x800/4b5563/ffffff?text=Training+2'
+    ]
+  },
+  {
+    title: '第二章：赛场风云',
+    description: '从校内赛到国际赛，每一次登台都是一次蜕变。我们享受思维碰撞的火花，也珍视团队协作的力量。',
+    images: [
+      'https://placehold.co/600x800/6b7280/ffffff?text=Competition+1',
+      'https://placehold.co/600x800/1f2937/ffffff?text=Competition+2'
+    ]
+  },
+  {
+    title: '第三章：生活点滴',
+    description: '辩论之外，我们是会一起聚餐、出游、分享生活的朋友。这份情谊，是辩论带给我们最宝贵的财富之一。',
+    images: [
+      'https://placehold.co/600x800/9ca3af/ffffff?text=Leisure+1',
+      'https://placehold.co/600x800/d1d5db/111827?text=Leisure+2',
+      'https://placehold.co/600x800/4b5563/ffffff?text=Leisure+3'
+    ]
+  }
+];
+
 let observer;
 
-const handleScroll = () => {
-  const chapterEl = chapterRefs.value[activeChapterIndex.value];
-  if (!chapterEl) return;
-
-  const images = chapters.value[activeChapterIndex.value].images;
-  if (!images || images.length <= 1) return;
-
-  const rect = chapterEl.getBoundingClientRect();
-  
-  // Define the "active" zone for scrolling as the element's height, starting from when its top hits the viewport's vertical center.
-  const triggerPoint = window.innerHeight * 0.5;
-  const scrollDistance = triggerPoint - rect.top;
-  const totalScrollHeightForChapter = rect.height;
-
-  // Calculate progress (from 0 to 1)
-  let progress = scrollDistance / totalScrollHeightForChapter;
-  progress = Math.max(0, Math.min(1, progress)); // Clamp between 0 and 1
-
-  // Map progress to an image index
-  const imageCount = images.length;
-  const imageIndex = Math.floor(progress * imageCount);
-  const clampedIndex = Math.max(0, Math.min(imageCount - 1, imageIndex));
-
-  // Update the current image only if it has changed
-  if (currentImage.value !== images[clampedIndex]) {
-    currentImage.value = images[clampedIndex];
-  }
-};
-
 onMounted(() => {
-  const options = {
-    root: null,
-    rootMargin: '-50% 0px -50% 0px', // Trigger when the element is at the vertical center of the viewport
-    threshold: 0
-  };
-
-  observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const index = chapterRefs.value.findIndex(ref => ref === entry.target);
-        if (index !== -1) {
-          activeChapterIndex.value = index;
-          // When a new chapter becomes active, immediately set its first image.
-          // The scroll handler will manage subsequent images.
-          if (chapters.value[index].images && chapters.value[index].images.length > 0) {
-            currentImage.value = chapters.value[index].images[0];
-          }
+  const sentinels = document.querySelectorAll('.sentinel');
+  observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          activeChapterIndex.value = parseInt(entry.target.dataset.index, 10);
         }
-      }
-    });
-  }, options);
-
-  chapterRefs.value.forEach(ref => {
-    if(ref) observer.observe(ref);
-  });
-
-  window.addEventListener('scroll', handleScroll);
+      });
+    },
+    { rootMargin: '-50% 0px -50% 0px', threshold: 0 }
+  );
+  sentinels.forEach((sentinel) => observer.observe(sentinel));
 });
 
 onUnmounted(() => {
-  if(observer) observer.disconnect();
-  window.removeEventListener('scroll', handleScroll);
+  if (observer) observer.disconnect();
 });
 </script>
 
 <style scoped>
-.team-culture-container {
-  display: flex;
-  min-height: 100vh;
-  background-color: #f8fafc;
-}
-.text-column {
-  width: 50%;
-  padding: 0 4rem;
-}
-.chapter {
-  min-height: 90vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  color: #0f172a;
-}
-.chapter-title {
-  font-size: 3rem;
-  font-weight: 800;
-  margin-bottom: 2rem;
-}
-.chapter-description {
-  font-family: serif;
-  font-size: 1.25rem;
-  line-height: 1.75;
-  color: #475569;
-  max-width: 36rem;
-}
-.gallery-column {
-  width: 50%;
-  position: relative;
-}
-.sticky-image-wrapper {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4rem;
-}
-.showcase-image {
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  border-radius: 0.75rem;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-}
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.6s ease;
-}
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>
+.team-culture-section { padding: 8rem 0; background-color: #f3f4f6; color: #111827; }
+.grid-container { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2rem; max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
 
-<style scoped>
-.team-culture-container {
-  display: flex;
-  min-height: 100vh;
-  background-color: #f8fafc;
-}
+/* --- Left Column --- */
 .text-column {
-  width: 50%;
-  padding: 0 4rem;
+  grid-column: 1 / span 5; /* Takes up 5 of 12 columns */
+  position: relative;
 }
-.chapter {
-  min-height: 90vh;
+.text-content-wrapper {
+  position: sticky;
+  top: 8rem;
+  height: calc(100vh - 16rem); /* Adjust height to prevent overlapping footer */
   display: flex;
   flex-direction: column;
   justify-content: center;
-  color: #0f172a;
 }
-.chapter-title {
-  font-size: 3rem;
-  font-weight: 800;
-  margin-bottom: 2rem;
-}
-.chapter-description {
-  font-family: serif;
-  font-size: 1.25rem;
-  line-height: 1.75;
-  color: #475569;
-  max-width: 36rem;
-}
+.chapter-title { font-size: 3rem; font-weight: 800; margin-bottom: 1rem; }
+.chapter-description { font-size: 1.125rem; color: #4b5563; }
+
+/* --- Right Column --- */
 .gallery-column {
-  width: 50%;
-  position: relative;
+  grid-column: 7 / span 6; /* Takes up 6 of 12 columns, leaving a gap */
 }
-.sticky-image-wrapper {
-  position: sticky;
-  top: 0;
-  height: 100vh;
+.gallery-content-wrapper {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4rem;
+  flex-direction: column;
+  gap: 4rem; /* Increased gap between image groups */
+  padding-top: 4rem; /* Add padding to create "breathing room" */
+  padding-bottom: 4rem;
 }
-.showcase-image {
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  border-radius: 0.75rem;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-}
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.6s ease;
-}
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
+.image-group { display: flex; flex-direction: column; gap: 2rem; position: relative; }
+.sentinel { position: absolute; top: 0; height: 1px; }
+.image-placeholder { width: 100%; padding-bottom: 125%; background-size: cover; background-position: center; border-radius: 0.75rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); }
+
+/* --- Transition --- */
+.fade-enter-active, .fade-leave-active { transition: opacity 0.5s ease; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
 </style>
