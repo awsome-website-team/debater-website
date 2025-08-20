@@ -16,8 +16,7 @@
       <!-- Right Column: Scrolling Image Gallery -->
       <div class="gallery-column">
         <div class="gallery-content-wrapper">
-          <div v-for="(chapter, index) in chapters" :key="index" class="image-group">
-            <div class="sentinel" :data-index="index"></div>
+          <div v-for="(chapter, index) in chapters" :key="index" class="image-group" :data-index="index">
             <div v-for="image in chapter.images" :key="image" 
                  class="image-placeholder" 
                  :style="{ backgroundImage: `url('${image}')` }">
@@ -65,7 +64,7 @@ const chapters = [
 let observer;
 
 onMounted(() => {
-  const sentinels = document.querySelectorAll('.sentinel');
+  const imageGroups = document.querySelectorAll('.image-group');
   observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -76,7 +75,7 @@ onMounted(() => {
     },
     { rootMargin: '-50% 0px -50% 0px', threshold: 0 }
   );
-  sentinels.forEach((sentinel) => observer.observe(sentinel));
+  imageGroups.forEach((group) => observer.observe(group));
 });
 
 onUnmounted(() => {
@@ -116,7 +115,6 @@ onUnmounted(() => {
   padding-bottom: 4rem;
 }
 .image-group { display: flex; flex-direction: column; gap: 2rem; position: relative; }
-.sentinel { position: absolute; top: 0; height: 1px; }
 .image-placeholder { width: 100%; padding-bottom: 125%; background-size: cover; background-position: center; border-radius: 0.75rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); }
 
 /* --- Transition --- */
