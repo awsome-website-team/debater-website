@@ -82,7 +82,6 @@ npm run dev
 
 ### 资源文件位置
 
-- **`public/`**: 用于存放全局静态资源，如网站的 Logo (`logo.png`)。此目录中的文件会直接被部署到网站根目录。
 - **`src/assets/`**: 用于存放在 Vue 组件内部使用的资源，如成员照片、活动照片等。建议在此目录下创建子目录以进行有条理的组织 (例如: `src/assets/members`, `src/assets/gallery`)。
 
 ---
