@@ -51,7 +51,7 @@ const activeFilter = ref('全部');
 
 const members = ref([
   // 24级 (8 members)
-  { id: 1, name: '林钰泽', title: '宝队', category: '24级', image: '/members/bbg.jpg' },
+  { id: 1, name: '林钰泽', title: '现任队长', category: '24级', image: '/members/bbg.jpg' },
   { id: 2, name: '龙晓磊', title: '队员', category: '24级', image: 'https://placehold.co/400x400/374151/ffffff?text=L.S.' },
   { id: 3, name: '赵煦超', title: '队员', category: '24级', image: 'https://placehold.co/400x400/4b5563/ffffff?text=W.W.' },
   { id: 4, name: '揭丽璐', title: '队员', category: '24级', image: '/members/lujiepng.jpg' },
@@ -61,24 +61,24 @@ const members = ref([
   { id: 8, name: '杨涛', title: '队员', category: '24级', image: '/members/taozi.jpg' },
 
   // 23级 (8 members)
-  { id: 9, name: '廖弈杰', title: '鸟队', category: '23级', image: '/members/liao.jpg' },
-  { id: 10, name: '吴太源', title: '结辩', category: '23级', image: '/members/taiyuanjiejpg.jpg' },
-  { id: 11, name: '颜宏斌', title: '一辩', category: '23级', image: '/members/pai.jpg' },
-  { id: 12, name: '王艺竹', title: '二辩', category: '23级', image: '/members/yizhujiepng.jpg'},
-  { id: 13, name: '刘雨欣', title: '三辩', category: '23级', image: '/members/yuxin.jpg' },
-  { id: 14, name: '蔡天琪', title: '四辩', category: '23级', image: '/members/tianqi.jpg' },
-  { id: 15, name: '周欣佳', title: '资料组', category: '23级', image: '/members/xingjiajie.png' },
-  { id: 16, name: '冯立佳', title: '陪练', category: '23级', image: '/members/lli.jpg' },
+  { id: 9, name: '廖弈杰', title: '前队长', category: '23级', image: '/members/liao.jpg' },
+  { id: 10, name: '吴太源', title: '队员', category: '23级', image: '/members/taiyuanjiejpg.jpg' },
+  { id: 11, name: '颜宏斌', title: '队员', category: '23级', image: '/members/pai.jpg' },
+  { id: 12, name: '王艺竹', title: '队员', category: '23级', image: '/members/yizhujie.jpg'},
+  { id: 13, name: '刘雨欣', title: '队员', category: '23级', image: '/members/yuxin.jpg' },
+  { id: 14, name: '蔡天琪', title: '队员', category: '23级', image: '/members/tianqi.jpg' },
+  { id: 15, name: '周欣佳', title: '队员', category: '23级', image: '/members/xingjiajie.png' },
+  { id: 16, name: '冯立佳', title: '队员', category: '23级', image: '/members/lli.jpg' },
   
-  // 22级 (8 members)
-  { id: 17, name: '郑伊依', title: '前队长', category: '22级', image: '/members/yyijie.jpg' },
+  // 22级 (8 members)i
+  { id: 17, name: '郑伊依', title: '前队长', category: '22级', image: '/members/yiyijie.jpg' },
   { id: 18, name: '张潇', title: '队员', category: '22级', image: '/members/coconut.jpg' },
-  { id: 19, name: '杨帅祥', title: '一辩', category: '22级', image: '/members/sx.jpg' },
-  { id: 20, name: '黄秋岚', title: '二辩', category: '22级', image: '/members/qiulan.jpg' },
-  { id: 21, name: '杨益', title: '三辩', category: '22级', image: 'https://placehold.co/400x400/fde68a/111827?text=M' },
-  { id: 22, name: '耿晴', title: '四辩', category: '22级', image: '/members/gengqingjie.jpg' },
-  { id: 23, name: '郑媛元', title: '资料组', category: '22级', image: '/members/OO.jpg' },
-  { id: 24, name: '金显皓', title: '陪练', category: '22级', image: '/members/xianhao.jpg' },
+  { id: 19, name: '杨帅祥', title: '队员', category: '22级', image: '/members/sx.jpg' },
+  { id: 20, name: '黄秋岚', title: '队员', category: '22级', image: '/members/qiulan.jpg' },
+  { id: 21, name: '杨益', title: '队员', category: '22级', image: 'https://placehold.co/400x400/fde68a/111827?text=M' },
+  { id: 22, name: '耿晴', title: '队员', category: '22级', image: '/members/gengqingjie.jpg' },
+  { id: 23, name: '郑媛元', title: '队员', category: '22级', image: '/members/OO.jpg' },
+  { id: 24, name: '金显皓', title: '队员', category: '22级', image: '/members/xianhao.jpg' },
 
   // 往届
   { id: 25, name: '蒋怡宁', title: '创始人', category: '往届', image: '/members/yinijie.jpg' },
