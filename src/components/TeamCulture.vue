@@ -1,7 +1,7 @@
 <template>
   <section id="culture" class="team-culture-section">
     <div class="grid-container">
-      <!-- Left Column: Sticky Text Content -->
+      <!-- Left Column: Sticky Text Content (Desktop Only) -->
       <div class="text-column">
         <div class="text-content-wrapper">
           <Transition name="fade" mode="out-in">
@@ -13,14 +13,23 @@
         </div>
       </div>
 
-      <!-- Right Column: Scrolling Image Gallery -->
+      <!-- Right Column: Content Flow -->
       <div class="gallery-column">
         <div class="gallery-content-wrapper">
-          <div v-for="(chapter, index) in chapters" :key="index" class="image-group" :data-index="index">
-            <img v-for="(image, imgIndex) in chapter.images" :key="image" 
-                 :src="image"
-                 alt="Team culture image"
-                 :class="['image-placeholder', { 'is-active': imgIndex === 0 }]" />
+          <!-- Loop through each chapter -->
+          <div v-for="(chapter, index) in chapters" :key="index" class="chapter-group">
+            <!-- Mobile-only Text Header -->
+            <div class="mobile-header">
+              <h2 class="chapter-title">{{ chapter.title }}</h2>
+              <p class="chapter-description">{{ chapter.description }}</p>
+            </div>
+            <!-- The Gallery itself -->
+            <div class="image-group" :data-index="index">
+              <img v-for="(image, imgIndex) in chapter.images" :key="image" 
+                   :src="image"
+                   alt="Team culture image"
+                   :class="['image-placeholder', { 'is-active': imgIndex === 0 }]" />
+            </div>
           </div>
         </div>
       </div>
@@ -76,16 +85,12 @@ function setupClickToScroll() {
 
     images.forEach((img, index) => {
       img.addEventListener('click', () => {
-        // Determine next index
         currentIndex = (index + 1) % images.length;
         const nextImage = images[currentIndex];
 
-        // Remove active class from all images in this group
         images.forEach(i => i.classList.remove('is-active'));
-        // Add active class to the next image
         nextImage.classList.add('is-active');
         
-        // Calculate scroll position to center the next image
         const scrollLeft = nextImage.offsetLeft - (group.offsetWidth / 2) + (nextImage.offsetWidth / 2);
 
         group.scrollTo({
@@ -99,7 +104,6 @@ function setupClickToScroll() {
 
 
 onMounted(() => {
-  // Setup for text content switching
   const imageGroups = document.querySelectorAll('.image-group');
   observer = new IntersectionObserver(
     (entries) => {
@@ -113,7 +117,6 @@ onMounted(() => {
   );
   imageGroups.forEach((group) => observer.observe(group));
 
-  // Setup for click-to-scroll functionality
   setupClickToScroll();
 });
 
@@ -123,75 +126,117 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.team-culture-section { padding: 8rem 0; background-color: #f3f4f6; color: #111827; }
-.grid-container { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2rem; max-width: 1536px; margin: 0 auto; padding: 0; }
+.team-culture-section { padding: 4rem 0; background-color: #f3f4f6; color: #111827; }
+.grid-container { max-width: 1536px; margin: 0 auto; padding: 0 1rem; }
 
-/* --- Left Column --- */
+/* --- Mobile-First Base Styles --- */
 .text-column {
-  grid-column: 1 / span 5;
-  position: relative;
+  display: none; /* Hide desktop sticky text by default */
 }
-.text-content-wrapper {
-  position: sticky;
-  top: 8rem;
-  height: calc(100vh - 16rem);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 0 2rem;
-}
-.chapter-title { font-size: 3rem; font-weight: 800; margin-bottom: 1rem; }
-.chapter-description { font-size: 1.125rem; color: #4b5563; }
-
-/* --- Right Column --- */
 .gallery-column {
-  grid-column: 7 / span 6;
+  grid-column: 1 / -1; /* Take full width */
 }
 .gallery-content-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 5rem;
-  padding-top: 4rem;
-  padding-bottom: 4rem;
+  gap: 4rem;
+}
+.mobile-header {
+  margin-bottom: 1.5rem;
+  padding: 0 0.5rem;
+}
+.chapter-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  margin-bottom: 0.75rem;
+}
+.chapter-description {
+  font-size: 1rem;
+  color: #4b5563;
 }
 
-/* --- 3D Depth Effect Gallery --- */
+/* --- Gallery Styles (Shared) --- */
 .image-group {
   position: relative;
   display: flex;
   flex-direction: row;
-  align-items: center; /* Vertically center images */
-  gap: 2rem;
+  align-items: center;
+  gap: 1rem;
   overflow-x: auto;
-  padding: 0 2.5%; /* Reduced stage padding */
-  /* Hide the scrollbar */
+  padding: 0 1.25rem;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 .image-group::-webkit-scrollbar {
   display: none;
 }
-
 .image-placeholder {
-  flex: 0 0 95%; /* Increased image width */
-  width: 95%;
+  flex: 0 0 90%;
+  width: 90%;
   height: auto;
   display: block;
   border-radius: 0.75rem;
-  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
   cursor: pointer;
-  
-  /* 3D Effect Styling */
   opacity: 0.4;
-  transform: scale(0.9);
+  transform: scale(0.95);
   transition: transform 0.5s ease, opacity 0.5s ease;
 }
-
 .image-placeholder.is-active {
   opacity: 1;
   transform: scale(1);
 }
 
+/* --- Desktop Layout (@media query) --- */
+@media (min-width: 1024px) {
+  .team-culture-section { padding: 8rem 0; }
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 2rem;
+    padding: 0;
+  }
+  .text-column {
+    display: block;
+    grid-column: 1 / span 5;
+    position: relative;
+  }
+  .text-content-wrapper {
+    position: sticky;
+    top: 8rem;
+    height: calc(100vh - 16rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 2rem;
+  }
+  .gallery-column {
+    grid-column: 7 / span 6;
+  }
+  .gallery-content-wrapper {
+    gap: 5rem;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+  .mobile-header {
+    display: none;
+  }
+  .chapter-title {
+    font-size: 3rem;
+  }
+  .chapter-description {
+    font-size: 1.125rem;
+  }
+  .image-group {
+    gap: 2rem;
+    padding: 0 2.5%;
+  }
+  .image-placeholder {
+    flex: 0 0 95%;
+    width: 95%;
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+  }
+}
 
 /* --- Transition --- */
 .fade-enter-active, .fade-leave-active { transition: opacity 0.5s ease; }
