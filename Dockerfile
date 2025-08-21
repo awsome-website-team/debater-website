@@ -24,6 +24,9 @@ FROM nginx:stable-alpine
 # 从 'builder' 阶段复制构建好的静态文件到 Nginx 的默认网站目录
 COPY --from=builder /app/dist /usr/share/nginx/html
 
+# 新增这一行！复制我们自定义的 Nginx 配置文件
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+
 # 声明容器将监听 80 端口
 EXPOSE 80
 
