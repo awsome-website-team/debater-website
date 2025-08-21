@@ -17,10 +17,10 @@
       <div class="gallery-column">
         <div class="gallery-content-wrapper">
           <div v-for="(chapter, index) in chapters" :key="index" class="image-group" :data-index="index">
-            <img v-for="image in chapter.images" :key="image" 
+            <img v-for="(image, imgIndex) in chapter.images" :key="image" 
                  :src="image"
                  alt="Team culture image"
-                 class="image-placeholder" />
+                 :class="['image-placeholder', { 'is-active': imgIndex === 0 }]" />
           </div>
         </div>
       </div>
@@ -72,12 +72,20 @@ function setupClickToScroll() {
   const imageGroups = document.querySelectorAll('.image-group');
   imageGroups.forEach(group => {
     const images = group.querySelectorAll('.image-placeholder');
+    let currentIndex = 0;
+
     images.forEach((img, index) => {
       img.addEventListener('click', () => {
-        const nextIndex = (index + 1) % images.length;
-        const nextImage = images[nextIndex];
+        // Determine next index
+        currentIndex = (index + 1) % images.length;
+        const nextImage = images[currentIndex];
+
+        // Remove active class from all images in this group
+        images.forEach(i => i.classList.remove('is-active'));
+        // Add active class to the next image
+        nextImage.classList.add('is-active');
         
-        // Calculate the scroll position to center the next image
+        // Calculate scroll position to center the next image
         const scrollLeft = nextImage.offsetLeft - (group.offsetWidth / 2) + (nextImage.offsetWidth / 2);
 
         group.scrollTo({
@@ -88,6 +96,7 @@ function setupClickToScroll() {
     });
   });
 }
+
 
 onMounted(() => {
   // Setup for text content switching
@@ -146,29 +155,43 @@ onUnmounted(() => {
   padding-bottom: 4rem;
 }
 
-/* --- Click-to-Scroll Horizontal Gallery --- */
+/* --- 3D Depth Effect Gallery --- */
 .image-group {
-  position: relative; /* This is the fix! Establishes a new coordinate system. */
+  position: relative;
   display: flex;
   flex-direction: row;
+  align-items: center; /* Vertically center images */
   gap: 2rem;
   overflow-x: auto;
+  padding: 0 2.5%; /* Reduced stage padding */
   /* Hide the scrollbar */
-  scrollbar-width: none; /* For Firefox */
-  -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 .image-group::-webkit-scrollbar {
-  display: none; /* For Chrome, Safari, and Opera */
+  display: none;
 }
 
 .image-placeholder {
-  height: 60vh;
-  width: auto;
+  flex: 0 0 95%; /* Increased image width */
+  width: 95%;
+  height: auto;
   display: block;
   border-radius: 0.75rem;
   box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
-  cursor: pointer; /* Indicate that the image is clickable */
+  cursor: pointer;
+  
+  /* 3D Effect Styling */
+  opacity: 0.4;
+  transform: scale(0.9);
+  transition: transform 0.5s ease, opacity 0.5s ease;
 }
+
+.image-placeholder.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
 
 /* --- Transition --- */
 .fade-enter-active, .fade-leave-active { transition: opacity 0.5s ease; }
