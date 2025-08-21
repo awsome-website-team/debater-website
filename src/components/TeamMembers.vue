@@ -44,6 +44,40 @@
 <script setup>
 import { ref, computed } from 'vue';
 
+// --- ASSET IMPORTS ---
+// 24级
+import bbgImg from '@/assets/members/bbg.jpg';
+import shitouImg from '@/assets/members/shitou.jpg';
+import chaoziImg from '@/assets/members/chaozi.jpg';
+import lujiepngImg from '@/assets/members/lujiepng.jpg';
+import yushengImg from '@/assets/members/yusheng.jpg';
+import ruiziImg from '@/assets/members/ruizi.jpg';
+import yzyImg from '@/assets/members/yzy.jpg';
+import taoziImg from '@/assets/members/taozi.jpg';
+// 23级
+import liaoImg from '@/assets/members/liao.jpg';
+import taiyuanjiejpgImg from '@/assets/members/taiyuanjiejpg.jpg';
+import paiImg from '@/assets/members/pai.jpg';
+import yizhujieImg from '@/assets/members/yizhujie.jpg';
+import yuxinImg from '@/assets/members/yuxin.jpg';
+import tianqiImg from '@/assets/members/tianqi.jpg';
+import xingjiajieImg from '@/assets/members/xingjiajie.png';
+import lliImg from '@/assets/members/lli.jpg';
+// 22级
+import yiyijieImg from '@/assets/members/yiyijie.jpg';
+import coconutImg from '@/assets/members/coconut.jpg';
+import sxImg from '@/assets/members/sx.jpg';
+import qiulanImg from '@/assets/members/qiulan.jpg';
+import gengqingjieImg from '@/assets/members/gengqingjie.jpg';
+import OOImg from '@/assets/members/OO.jpg';
+import xianhaoImg from '@/assets/members/xianhao.jpg';
+// 往届
+import yinijieImg from '@/assets/members/yinijie.jpg';
+import yixuanjieImg from '@/assets/members/yixuanjie.jpg';
+import wenyunjieImg from '@/assets/members/wenyunjie.jpg';
+import dashiImg from '@/assets/members/dashi.jpg';
+
+
 const filters = ['全部', '24级', '23级', '22级', '往届', '荣誉'];
 const activeFilter = ref('全部');
 
@@ -51,40 +85,40 @@ const activeFilter = ref('全部');
 
 const members = ref([
   // 24级 (8 members)
-  { id: 1, name: '林钰泽', title: '现任队长', category: '24级', image: 'src/assets/members/bbg.jpg' },
-  { id: 2, name: '龙晓磊', title: '队员', category: '24级', image: 'src/assets/members/shitou.jpg' },
-  { id: 3, name: '赵煦超', title: '队员', category: '24级', image: 'src/assets/members/chaozi.jpg' },
-  { id: 4, name: '揭丽璐', title: '队员', category: '24级', image: 'src/assets/members/lujiepng.jpg' },
-  { id: 5, name: '吴宇升', title: '队员', category: '24级', image: 'src/assets/members/yusheng.jpg' },
-  { id: 6, name: '吴杨蕊瑞', title: '队员', category: '24级', image: 'src/assets/members/ruizi.jpg' },
-  { id: 7, name: '阳泽怡', title: '队员', category: '24级', image: 'src/assets/members/yzy.jpg' },
-  { id: 8, name: '杨涛', title: '队员', category: '24级', image: 'src/assets/members/taozi.jpg' },
+  { id: 1, name: '林钰泽', title: '现任队长', category: '24级', image: bbgImg },
+  { id: 2, name: '龙晓磊', title: '队员', category: '24级', image: shitouImg },
+  { id: 3, name: '赵煦超', title: '队员', category: '24级', image: chaoziImg },
+  { id: 4, name: '揭丽璐', title: '队员', category: '24级', image: lujiepngImg },
+  { id: 5, name: '吴宇升', title: '队员', category: '24级', image: yushengImg },
+  { id: 6, name: '吴杨蕊瑞', title: '队员', category: '24级', image: ruiziImg },
+  { id: 7, name: '阳泽怡', title: '队员', category: '24级', image: yzyImg },
+  { id: 8, name: '杨涛', title: '队员', category: '24级', image: taoziImg },
 
   // 23级 (8 members)
-  { id: 9, name: '廖羿杰', title: '前队长', category: '23级', image: 'src/assets/members/liao.jpg' },
-  { id: 10, name: '吴太源', title: '队员', category: '23级', image: 'src/assets/members/taiyuanjiejpg.jpg' },
-  { id: 11, name: '颜宏斌', title: '队员', category: '23级', image: 'src/assets/members/pai.jpg' },
-  { id: 12, name: '王艺竹', title: '队员', category: '23级', image: 'src/assets/members/yizhujie.jpg'},
-  { id: 13, name: '刘雨欣', title: '队员', category: '23级', image: 'src/assets/members/yuxin.jpg' },
-  { id: 14, name: '蔡天琪', title: '队员', category: '23级', image: 'src/assets/members/tianqi.jpg' },
-  { id: 15, name: '周欣佳', title: '队员', category: '23级', image: 'src/assets/members/xingjiajie.png' },
-  { id: 16, name: '冯立佳', title: '队员', category: '23级', image: 'src/assets/members/lli.jpg' },
+  { id: 9, name: '廖羿杰', title: '前队长', category: '23级', image: liaoImg },
+  { id: 10, name: '吴太源', title: '队员', category: '23级', image: taiyuanjiejpgImg },
+  { id: 11, name: '颜宏斌', title: '队员', category: '23级', image: paiImg },
+  { id: 12, name: '王艺竹', title: '队员', category: '23级', image: yizhujieImg},
+  { id: 13, name: '刘雨欣', title: '队员', category: '23级', image: yuxinImg },
+  { id: 14, name: '蔡天琪', title: '队员', category: '23级', image: tianqiImg },
+  { id: 15, name: '周欣佳', title: '队员', category: '23级', image: xingjiajieImg },
+  { id: 16, name: '冯立佳', title: '队员', category: '23级', image: lliImg },
   
   // 22级 (8 members)i
-  { id: 17, name: '郑伊依', title: '前队长', category: '22级', image: 'src/assets/members/yiyijie.jpg' },
-  { id: 18, name: '张潇', title: '队员', category: '22级', image: 'src/assets/members/coconut.jpg' },
-  { id: 19, name: '杨帅祥', title: '队员', category: '22级', image: 'src/assets/members/sx.jpg' },
-  { id: 20, name: '黄秋岚', title: '队员', category: '22级', image: 'src/assets/members/qiulan.jpg' },
+  { id: 17, name: '郑伊依', title: '前队长', category: '22级', image: yiyijieImg },
+  { id: 18, name: '张潇', title: '队员', category: '22级', image: coconutImg },
+  { id: 19, name: '杨帅祥', title: '队员', category: '22级', image: sxImg },
+  { id: 20, name: '黄秋岚', title: '队员', category: '22级', image: qiulanImg },
   { id: 21, name: '杨益', title: '队员', category: '22级', image: 'https://placehold.co/400x400/fde68a/111827?text=M' },
-  { id: 22, name: '耿晴', title: '队员', category: '22级', image: 'src/assets/members/gengqingjie.jpg' },
-  { id: 23, name: '郑媛元', title: '队员', category: '22级', image: 'src/assets/members/OO.jpg' },
-  { id: 24, name: '荆显皓', title: '队员', category: '22级', image: 'src/assets/members/xianhao.jpg' },
+  { id: 22, name: '耿晴', title: '队员', category: '22级', image: gengqingjieImg },
+  { id: 23, name: '郑媛元', title: '队员', category: '22级', image: OOImg },
+  { id: 24, name: '荆显皓', title: '队员', category: '22级', image: xianhaoImg },
 
   // 往届
-  { id: 25, name: '蒋怡宁', title: '创始人', category: '往届', image: 'src/assets/members/yinijie.jpg' },
-  { id: 26, name: '王怡萱', title: '创始人', category: '往届', image: 'src/assets/members/yixuanjie.jpg' },
-  { id: 26, name: '徐文韵', title: '创始人', category: '往届', image: 'src/assets/members/wenyunjie.jpg' },
-  { id: 26, name: '黄浩真', title: '创始人', category: '往届', image: 'src/assets/members/dashi.jpg' },
+  { id: 25, name: '蒋怡宁', title: '创始人', category: '往届', image: yinijieImg },
+  { id: 26, name: '王怡萱', title: '创始人', category: '往届', image: yixuanjieImg },
+  { id: 27, name: '徐文韵', title: '创始人', category: '往届', image: wenyunjieImg },
+  { id: 28, name: '黄浩真', title: '创始人', category: '往届', image: dashiImg },
 ]);
 
 const honors = ref([
