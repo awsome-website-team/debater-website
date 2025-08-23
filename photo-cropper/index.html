@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>圆形头像裁剪工具</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+            color: #333;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h1 {
+            margin-top: 0;
+            color: #1a202c;
+        }
+        p {
+            color: #718096;
+            margin-bottom: 1.5rem;
+        }
+        .cropper-wrapper {
+            display: none; /* Initially hidden */
+            margin-top: 1.5rem;
+        }
+        .cropper-container {
+            height: 400px;
+            width: 100%;
+        }
+        #imageToCrop {
+            display: block;
+            max-width: 100%;
+        }
+        .button-group {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .button {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            background-color: #4299e1;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            text-decoration: none;
+        }
+        .button:hover {
+            background-color: #3182ce;
+        }
+        .button-download {
+            background-color: #48bb78;
+        }
+        .button-download:hover {
+            background-color: #38a169;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .footer {
+            margin-top: 2rem;
+            font-size: 0.875rem;
+            color: #a0aec0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>圆形头像裁剪工具</h1>
+        <p>请上传你的照片，通过<b>滚轮缩放</b>、<b>鼠标拖动</b>来调整，然后下载裁剪好的图片。</p>
+
+        <div class="button-group">
+            <label for="upload" class="button">上传照片</label>
+            <input type="file" id="upload" accept="image/*">
+            <button id="download" class="button button-download" style="display: none;">下载头像</button>
+        </div>
+
+        <div class="cropper-wrapper" id="cropper-wrapper">
+            <div class="cropper-container">
+                <img id="imageToCrop" src="">
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>所有操作均在本地完成，你的照片不会被上传。</p>
+    </div>
+
+    <script>
+        const uploadInput = document.getElementById('upload');
+        const downloadBtn = document.getElementById('download');
+        const image = document.getElementById('imageToCrop');
+        const cropperWrapper = document.getElementById('cropper-wrapper');
+        let cropper;
+        let imageUrl = null;
+
+        uploadInput.addEventListener('change', (e) => {
+            const files = e.target.files;
+            if (files && files.length > 0) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    imageUrl = event.target.result;
+                    
+                    // If cropper is already initialized, just replace the image
+                    if (cropper) {
+                        cropper.replace(imageUrl);
+                        return;
+                    }
+
+                    // If it's the first time, initialize it
+                    image.src = imageUrl;
+                    cropperWrapper.style.display = 'block';
+                    downloadBtn.style.display = 'inline-block';
+
+                    // IMPORTANT: Defer cropper initialization
+                    // This gives the browser time to render the image and container
+                    // before the library tries to calculate their dimensions.
+                    setTimeout(() => {
+                        cropper = new Cropper(image, {
+                            aspectRatio: 1,
+                            viewMode: 1,
+                            background: false,
+                            autoCropArea: 0.9,
+                            guides: false,
+                            highlight: false,
+                            dragMode: 'move',
+                            cropBoxMovable: false,
+                            cropBoxResizable: false,
+                            toggleDragModeOnDblclick: false,
+                            ready: function () {
+                                // Make the preview circular
+                                document.querySelector('.cropper-view-box').style.borderRadius = '50%';
+                                document.querySelector('.cropper-face').style.borderRadius = '50%';
+                            }
+                        });
+                    }, 10); // A small delay is enough
+                };
+                reader.readAsDataURL(files[0]);
+            }
+        });
+
+        downloadBtn.addEventListener('click', () => {
+            if (!cropper) {
+                return;
+            }
+
+            const canvas = cropper.getCroppedCanvas({
+                width: 512,
+                height: 512,
+                imageSmoothingQuality: 'high',
+            });
+
+            canvas.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'profile-picture.png';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            }, 'image/png');
+        });
+    </script>
+
+</body>
+</html>
