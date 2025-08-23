@@ -50,10 +50,10 @@ import bbgImg from '@/assets/members/bbg.jpg';
 import shitouImg from '@/assets/members/shitou.jpg';
 import chaoziImg from '@/assets/members/chaozi.jpg';
 import lujiepngImg from '@/assets/members/lujiepng.jpg';
-import yushengImg from '@/assets/members/yusheng.jpg';
+import yushengImg from '@/assets/members/yusheng.png';
 import ruiziImg from '@/assets/members/ruizi.jpg';
-import yzyImg from '@/assets/members/yzy.jpg';
-import taoziImg from '@/assets/members/taozi.jpg';
+import yzyImg from '@/assets/members/yzy.png';
+import taoziImg from '@/assets/members/yangtao.png';
 // 23级
 import liaoImg from '@/assets/members/liao.jpg';
 import taiyuanjiejpgImg from '@/assets/members/taiyuanjiejpg.jpg';
