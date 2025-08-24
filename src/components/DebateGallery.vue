@@ -45,12 +45,18 @@ import PlayingIcon from './PlayingIcon.vue';
 
 import moneyDebateImg from '@/assets/debategallery/money-debate.png';
 import moneyDebateAudio from '@/assets/debategallery/money-debate.mp3';
+import loveDebateImgeImg from '@/assets/debategallery/love-debate.png';
+import loveDebateAudio from '@/assets/debategallery/love-debate.mp3';
+import lonelyDebateImgeImg from '@/assets/debategallery/lonely-debate.png';
+import lonelyDebateAudio from '@/assets/debategallery/lonely-debate.mp3';
+import sociableDebateImgeImg from '@/assets/debategallery/sociable-debate.png';
+import socibaleDebateAudio from '@/assets/debategallery/sociable-debate.mp3';
 
 const albums = ref([
-  { id: 1, title: '金钱辩', subtitle: '金钱是否把人异化了', image: moneyDebateImg, audio: moneyDebateAudio },
-  { id: 2, title: '科技辩', subtitle: '科技发展是否会取代人类思考', image: 'https://placehold.co/600x600/1f2937/ffffff?text=Tech', audio: null },
-  { id: 3, title: '人性辩', subtitle: '人性本善还是性本恶', image: 'https://placehold.co/600x600/374151/ffffff?text=Humanity', audio: null },
-  { id: 4, title: '环保辩', subtitle: '环保是个人责任还是政府责任', image: 'https://placehold.co/600x600/4b5563/ffffff?text=Eco', audio: null },
+  { id: 1, title: '如果有超能力让你喜欢的人爱上你，你会不会使用', subtitle:'', image: loveDebateImgeImg, audio: loveDebateAudio},
+  { id: 2, title: '金钱是不是万恶之源', subtitle: '', image: moneyDebateImg, audio: moneyDebateAudio },
+  { id: 3, title: '人终将孤独还是不孤独', subtitle: '', image: lonelyDebateImgeImg , audio: lonelyDebateAudio},
+  { id: 4, title: '我更愿意当一个合群/不合群的大人', subtitle: '', image: sociableDebateImgeImg , audio: socibaleDebateAudio},
   { id: 5, title: '教育辩', subtitle: '通才教育还是专才教育更重要', image: 'https://placehold.co/600x600/6b7280/ffffff?text=Edu', audio: null },
   { id: 6, title: '艺术辩', subtitle: '艺术是否应该有道德底线', image: 'https://placehold.co/600x600/9ca3af/ffffff?text=Art', audio: null },
   { id: 7, title: '历史辩', subtitle: '时势造英雄还是英雄造时势', image: 'https://placehold.co/600x600/d1d5db/111827?text=History', audio: null },
