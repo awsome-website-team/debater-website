@@ -51,17 +51,17 @@ import shitouImg from '@/assets/members/shitou.jpg';
 import chaoziImg from '@/assets/members/chaozi.jpg';
 import lujiepngImg from '@/assets/members/lujiepng.jpg';
 import yushengImg from '@/assets/members/yusheng.png';
-import ruiziImg from '@/assets/members/ruizi.jpg';
+import ruiziImg from '@/assets/members/ruizi.png';
 import yzyImg from '@/assets/members/yzy.png';
 import taoziImg from '@/assets/members/yangtao.png';
 // 23级
 import liaoImg from '@/assets/members/liao.jpg';
-import taiyuanjiejpgImg from '@/assets/members/taiyuanjiejpg.jpg';
+import taiyuanjiejpgImg from '@/assets/members/taiyuan.png';
 import paiImg from '@/assets/members/pai.jpg';
 import yizhujieImg from '@/assets/members/yizhujie.jpg';
-import yuxinImg from '@/assets/members/yuxin.jpg';
+import yuxinImg from '@/assets/members/yuxin.png';
 import tianqiImg from '@/assets/members/tianqi.jpg';
-import xingjiajieImg from '@/assets/members/xingjiajie.png';
+import xingjiajieImg from '@/assets/members/xingjia.png';
 import lliImg from '@/assets/members/lli.jpg';
 // 22级
 import yiyijieImg from '@/assets/members/yiyijie.jpg';
