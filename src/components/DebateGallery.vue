@@ -46,11 +46,11 @@ import PlayingIcon from './PlayingIcon.vue';
 import moneyDebateImg from '@/assets/debategallery/money-debate.png';
 import moneyDebateAudio from '@/assets/debategallery/money-debate.mp3';
 import loveDebateImgeImg from '@/assets/debategallery/love-debate.png';
-import loveDebateAudio from '@/assets/debategallery/love-debate.mp3';
+import loveDebateAudio from '@/assets/debategallery/love-debate.MP3';
 import lonelyDebateImgeImg from '@/assets/debategallery/lonely-debate.png';
-import lonelyDebateAudio from '@/assets/debategallery/lonely-debate.mp3';
+import lonelyDebateAudio from '@/assets/debategallery/lonely-debate.MP3';
 import sociableDebateImgeImg from '@/assets/debategallery/sociable-debate.png';
-import socibaleDebateAudio from '@/assets/debategallery/sociable-debate.mp3';
+import socibaleDebateAudio from '@/assets/debategallery/sociable-debate.MP3';
 
 const albums = ref([
   { id: 1, title: '如果有超能力让你喜欢的人爱上你，你会不会使用', subtitle:'', image: loveDebateImgeImg, audio: loveDebateAudio},
