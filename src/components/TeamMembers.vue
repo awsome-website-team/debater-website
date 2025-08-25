@@ -58,7 +58,7 @@ import taoziImg from '@/assets/members/yangtao.png';
 import liaoImg from '@/assets/members/liao.jpg';
 import taiyuanjiejpgImg from '@/assets/members/taiyuan.png';
 import paiImg from '@/assets/members/pai.jpg';
-import yizhujieImg from '@/assets/members/yizhujie.jpg';
+import yizhujieImg from '@/assets/members/yizhu.jpeg';
 import yuxinImg from '@/assets/members/yuxin.png';
 import tianqiImg from '@/assets/members/tianqi.jpg';
 import xingjiajieImg from '@/assets/members/xingjia.png';
@@ -73,8 +73,8 @@ import OOImg from '@/assets/members/OO.jpg';
 import xianhaoImg from '@/assets/members/xianhao.jpg';
 // 往届
 import yinijieImg from '@/assets/members/yinijie.jpg';
-import yixuanjieImg from '@/assets/members/yixuanjie.jpg';
-import wenyunjieImg from '@/assets/members/wenyunjie.jpg';
+import yixuanjieImg from '@/assets/members/yixuan.png';
+import wenyunjieImg from '@/assets/members/wenyun.png';
 import dashiImg from '@/assets/members/dashi.jpg';
 
 
