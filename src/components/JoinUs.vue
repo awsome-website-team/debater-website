@@ -1,7 +1,7 @@
 <template>
   <section id="join" class="join-us-section">
     <div class="content-container">
-      <h2 class="main-title">JOIN US</h2>
+      <h2 class="main-title">加入我们</h2>
       <p class="quote">
         "I promise not to waste your time. I'm well aware that we all get way too many marketing emails. I'll only write when I actually have something new to share."
       </p>

@@ -59,7 +59,7 @@ const chapters = [
     title: '第二章：赛场风云',
     description: '从校内赛到国际赛，每一次登台都是一次蜕变。我们享受思维碰撞的火花，也珍视团队协作的力量。',
     images: [
-      'https://placehold.co/800x600/6b7280/ffffff?text=Competition+1',
+      'https://placehold.co/800x600/374151/ffffff?text=Competition+1',
       'https://placehold.co/600x800/1f2937/ffffff?text=Competition+2',
       'https://placehold.co/900x600/4b5563/ffffff?text=Competition+3'
     ]
@@ -68,7 +68,7 @@ const chapters = [
     title: '第三章：生活点滴',
     description: '辩论之外，我们是会一起聚餐、出游、分享生活的朋友。这份情谊，是辩论带给我们最宝贵的财富之一。',
     images: [
-      'https://placehold.co/600x800/9ca3af/ffffff?text=Leisure+1',
+      'https://placehold.co/600x800/374151/ffffff?text=Leisure+1',
       'https://placehold.co/600x400/d1d5db/111827?text=Leisure+2',
       'https://placehold.co/600x900/4b5563/ffffff?text=Leisure+3'
     ]
@@ -126,7 +126,7 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.team-culture-section { padding: 4rem 0; background-color: #f3f4f6; color: #111827; }
+.team-culture-section { padding: 4rem 0; background-color: #F3F4F6; color: #111827; }
 .grid-container { max-width: 1536px; margin: 0 auto; padding: 0 1rem; }
 
 /* --- Mobile-First Base Styles --- */
@@ -198,7 +198,7 @@ onUnmounted(() => {
   }
   .text-column {
     display: block;
-    grid-column: 1 / span 5;
+    grid-column: 1 / span 6;
     position: relative;
   }
   .text-content-wrapper {
@@ -208,10 +208,10 @@ onUnmounted(() => {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 0 2rem;
+    padding: 0 4rem 0 6rem;
   }
   .gallery-column {
-    grid-column: 7 / span 6;
+    grid-column: 8 / span 5;
   }
   .gallery-content-wrapper {
     gap: 5rem;
@@ -228,8 +228,8 @@ onUnmounted(() => {
     font-size: 1.125rem;
   }
   .image-group {
-    gap: 2rem;
-    padding: 0 2.5%;
+    gap: 3.5rem;
+    padding: 0 6% 0 2.5%;
   }
   .image-placeholder {
     flex: 0 0 95%;

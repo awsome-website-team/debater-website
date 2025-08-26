@@ -2,15 +2,22 @@
   <div class="min-h-screen bg-gray-900 text-gray-100 font-sans">
     <!-- 1. Navigation Bar -->
     <header 
-      class="fixed top-0 left-0 right-0 z-50 transition-colors duration-500"
+  class="fixed top-0 left-0 right-0 z-50 transition-colors duration-500 bg-gray-900" style="background-color: rgba(17, 24, 39, 0.7);"
       :class="{ 'text-gray-900': isDarkText, 'text-white': !isDarkText }"
     >
-      <nav class="px-6 py-4 flex justify-end items-center">
-        <div class="space-x-6 text-sm">
-          <router-link to="/#culture" class="hover:opacity-75 transition-opacity duration-300">文化</router-link>
-          <router-link to="/#team" class="hover:opacity-75 transition-opacity duration-300">团队</router-link>
+      <nav class="px-6 py-4 flex justify-between items-center">
+        <div>
+          <router-link to="/" class="hover:opacity-75 transition-opacity duration-300 inline-flex items-center">
+            <img src="@/assets/home.svg" alt="首页" class="h-4 w-4 mr-1" />
+            首页
+          </router-link>
+        </div>
+        <div class="space-x-6 text-sm flex items-center">
+          <router-link to="/#teamculture" class="hover:opacity-75 transition-opacity duration-300">团队文化</router-link>
+          <router-link to="/#teammembers" class="hover:opacity-75 transition-opacity duration-300">团队成员</router-link>
+          <router-link to="/daily-snapshot" class="hover:opacity-75 transition-opacity duration-300">日常留影</router-link>
           <router-link 
-            to="/#join" 
+            to="/#joinus" 
             class="px-4 py-2 rounded-full transition-colors duration-300 font-semibold"
             :class="{ 
               'bg-gray-800 text-white hover:bg-gray-700': isDarkText, 

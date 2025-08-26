@@ -28,13 +28,19 @@
     <DebateGallery />
 
     <!-- 4. Team Culture Section -->
-    <TeamCulture />
+    <section id="teamculture">
+      <TeamCulture />
+    </section>
 
     <!-- 5. Team Members Section -->
-    <TeamMembers />
+    <section id="teammembers">
+      <TeamMembers />
+    </section>
 
     <!-- 6. Join Us Section -->
-    <JoinUs />
+    <section id="joinus">
+      <JoinUs />
+    </section>
   </div>
 </template>
 
