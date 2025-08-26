@@ -76,6 +76,12 @@ import yinijieImg from '@/assets/members/yinijie.jpg';
 import yixuanjieImg from '@/assets/members/yixuan.png';
 import wenyunjieImg from '@/assets/members/wenyun.png';
 import dashiImg from '@/assets/members/dashi.jpg';
+import zhiqiaoImg from '@/assets/members/zhiqiao.jpg';
+import ziyueImg from '@/assets/members/ziyue.png';
+import sihuiImg from '@/assets/members/sihui.png';
+import zhuangyiImg from '@/assets/members/zhuangyi.png';
+
+
 
 
 const filters = ['全部', '24级', '23级', '22级', '往届', '荣誉'];
@@ -115,10 +121,15 @@ const members = ref([
   { id: 24, name: '荆显皓', title: '队员', category: '22级', image: xianhaoImg },
 
   // 往届
-  { id: 25, name: '蒋怡宁', title: '创始人', category: '往届', image: yinijieImg },
+  { id: 25, name: '黄浩真', title: '前队长', category: '往届', image: dashiImg },
   { id: 26, name: '王怡萱', title: '创始人', category: '往届', image: yixuanjieImg },
   { id: 27, name: '徐文韵', title: '创始人', category: '往届', image: wenyunjieImg },
-  { id: 28, name: '黄浩真', title: '创始人', category: '往届', image: dashiImg },
+  { id: 28, name: '蒋怡宁', title: '创始人', category: '往届', image: yinijieImg }, 
+  { id: 29, name: '黄之乔', title: '创始人', category: '往届', image: zhiqiaoImg },
+  { id: 30, name: '杨子越', title: '创始人', category: '往届', image: ziyueImg },
+  { id: 31, name: '朱思慧', title: '创始人', category: '往届', image: sihuiImg },
+  { id: 32, name: '庄毅', title: '创始人', category: '往届', image: zhuangyiImg },
+
 ]);
 
 const honors = ref([
