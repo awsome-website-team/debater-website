@@ -123,7 +123,7 @@ onMounted(() => {
 .sticky-container { position: sticky; top: 0; height: 100vh; overflow: hidden; display: flex; align-items: center; }
 
 /* --- Header Styles --- */
-.header-content { position: absolute; top: 0; left: 0; width: 100%; padding: 3rem 4rem; display: flex; justify-content: space-between; align-items: flex-start; z-index: 10; }
+.header-content { position: absolute; top: 0; left: 0; width: 100%; padding: 8rem 4rem 3rem 4rem; display: flex; justify-content: space-between; align-items: flex-start; z-index: 10; }
 .header-left { pointer-events: none; } /* Left side is not clickable */
 .header-right { pointer-events: all; } /* Right side IS clickable */
 
@@ -135,7 +135,7 @@ onMounted(() => {
 .sub-heading-link:hover .sub-heading { color: white; }
 
 /* --- Scrolling Content Styles --- */
-.scroll-content { display: flex; align-items: center; gap: 4rem; padding: 0 8rem; }
+.scroll-content { display: flex; align-items: center; gap: 4rem; padding: 12rem 8rem 1.5rem 8rem; }
 .card { position: relative; flex-shrink: 0; width: 24rem; height: 24rem; border-radius: 0.75rem; overflow: hidden; color: white; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
 .card-background { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; transition: transform 0.6s ease; }
 .card:hover .card-background { transform: scale(1.05); }
