@@ -5,12 +5,13 @@
       <!-- Static Header Content -->
       <div class="header-content">
         <div class="header-left">
-          <h2 class="main-heading">WHY DEBATE?</h2>
+          <h2 class="main-heading">为什么辩论?</h2>
         </div>
         <div class="header-right">
           <router-link to="/why-we-debate" class="sub-heading-link">
             <p class="sub-heading">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              维特根斯坦在《逻辑哲学论》中说语言的边界就是世界的边界，从这个角度看，辩论当之无愧是一个重新认识世界的过程
+              ，我们每个人或多或少都被一两个振聋发聩的辩论片段吸引，那正是思想突破既有牢笼，向着更自由、更辽阔的世界边界试探性飞翔的迷人时刻
             </p>
             <span class="read-more">深入阅读 &rarr;</span>
           </router-link>
@@ -129,8 +130,8 @@ onMounted(() => {
 
 .main-heading { font-size: 2.25rem; font-weight: 800; color: white; }
 .sub-heading-link { text-decoration: none; color: inherit; }
-.sub-heading { font-family: serif; font-size: 1.125rem; color: #9ca3af; max-width: 24rem; text-align: right; margin-bottom: 0.5rem; transition: color 0.3s ease; }
-.read-more { display: block; text-align: right; font-weight: 600; color: white; opacity: 0; transition: opacity 0.3s ease; }
+.sub-heading { font-family: serif; font-size: 1.125rem; color: #9ca3af; max-width: 36rem; text-align: right; margin-bottom: 0.5rem; transition: color 0.3s ease; }
+.read-more { display: block; text-align: right; font-weight: 600; color: white; opacity: 0.4; transition: opacity 0.3s ease; }
 .sub-heading-link:hover .read-more { opacity: 1; }
 .sub-heading-link:hover .sub-heading { color: white; }
 

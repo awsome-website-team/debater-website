@@ -47,8 +47,8 @@ const activeChapterIndex = ref(0);
 
 const chapters = [
   {
-    title: '第一章：日常训练',
-    description: '每周的例会，不仅是唇枪舌战的演练场，更是逻辑思维的健身房。我们在这里剖析辩题，打磨论点，学习如何清晰而有力地表达。',
+    title: '家庭',
+    description: '如果用一个词来描述每个新成员进入辩队的感受的话，我想会是家庭，每个学长姐都很热情地对待你',
     images: [
       teambuilding1,
       teambuilding2,
