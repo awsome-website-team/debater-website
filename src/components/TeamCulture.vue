@@ -42,6 +42,13 @@ import { ref, onMounted, onUnmounted } from 'vue';
 import teambuilding1 from '@/assets/family/first-team-building-01.jpg'
 import teambuilding2 from '@/assets/family/first-team-building-02.jpg'
 import teambuilding3 from '@/assets/family/first-team-building-03.jpg'
+import competition1 from '@/assets/family/competition/1.jpeg'
+import competition2 from '@/assets/family/competition/2.jpg'
+import competition3 from '@/assets/family/competition/3.jpeg'
+import activity1 from '@/assets/family/activity/1.jpeg'
+import activity2 from '@/assets/family/activity/2.jpeg'
+import activity3 from '@/assets/family/activity/3.png'
+
 
 const activeChapterIndex = ref(0);
 
@@ -56,21 +63,21 @@ const chapters = [
     ]
   },
   {
-    title: '第二章：赛场风云',
-    description: '从校内赛到国际赛，每一次登台都是一次蜕变。我们享受思维碰撞的火花，也珍视团队协作的力量。',
+    title: '',
+    description: '',
     images: [
-      'https://placehold.co/800x600/6b7280/ffffff?text=Competition+1',
-      'https://placehold.co/600x800/1f2937/ffffff?text=Competition+2',
-      'https://placehold.co/900x600/4b5563/ffffff?text=Competition+3'
+    competition1,
+    competition2,
+    competition3
     ]
   },
   {
-    title: '第三章：生活点滴',
-    description: '辩论之外，我们是会一起聚餐、出游、分享生活的朋友。这份情谊，是辩论带给我们最宝贵的财富之一。',
+    title: '',
+    description: '',
     images: [
-      'https://placehold.co/600x800/9ca3af/ffffff?text=Leisure+1',
-      'https://placehold.co/600x400/d1d5db/111827?text=Leisure+2',
-      'https://placehold.co/600x900/4b5563/ffffff?text=Leisure+3'
+      activity1,
+      activity2,
+      activity3,
     ]
   }
 ];
