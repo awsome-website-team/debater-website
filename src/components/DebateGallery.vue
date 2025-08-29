@@ -10,8 +10,7 @@
         <div class="header-right">
           <router-link to="/why-we-debate" class="sub-heading-link">
             <p class="sub-heading">
-              维特根斯坦在《逻辑哲学论》中说语言的边界就是世界的边界，从这个角度看，辩论当之无愧是一个重新认识世界的过程
-              ，我们每个人或多或少都被一两个振聋发聩的辩论片段吸引，那正是思想突破既有牢笼，向着更自由、更辽阔的世界边界试探性飞翔的迷人时刻
+              柏拉图在《申辩篇》中记载，苏格拉底认为自己唯一的智慧便是知道自己一无所知。与赛场上的针锋相对不同，每个辩论片段带给我们的都是虔诚的谦卑
             </p>
             <span class="read-more">深入阅读 &rarr;</span>
           </router-link>
@@ -86,33 +85,25 @@ const togglePlay = (id, index) => {
 const galleryWrapper = ref(null);
 const scrollContent = ref(null);
 let lenis;
-let desktopAnimationCleanup = null;
 
-const isDesktop = () => window.innerWidth > 768;
+onMounted(() => {
+  audioRefs.value.forEach((audio) => {
+    if (audio) { audio.onended = () => { isPlaying.value = false; currentlyPlayingId.value = null; }; }
+  });
 
-const setupDesktopAnimation = () => {
   const wrapper = galleryWrapper.value;
   const content = scrollContent.value;
   if (!wrapper || !content) return;
 
   const setHeight = () => {
-    if (content.scrollWidth > window.innerWidth) {
-      wrapper.style.height = `${content.scrollWidth * 0.7}px`;
-    } else {
-      wrapper.style.height = `100vh`;
-    }
+    if (content.scrollWidth > window.innerWidth) { wrapper.style.height = `${content.scrollWidth * 0.7}px`; } 
+    else { wrapper.style.height = `100vh`; }
   };
   setHeight();
   window.addEventListener('resize', setHeight);
 
   lenis = new Lenis();
-  const raf = (time) => {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
-  }
-  requestAnimationFrame(raf);
-  
-  const onScroll = ({ scroll }) => {
+  lenis.on('scroll', ({ scroll }) => {
     const rect = wrapper.getBoundingClientRect();
     if (rect.top > window.innerHeight || rect.bottom < 0) return;
     const scrollableDistance = wrapper.scrollHeight - window.innerHeight;
@@ -120,301 +111,129 @@ const setupDesktopAnimation = () => {
     const progress = (scroll - wrapper.offsetTop) / scrollableDistance;
     const clampedProgress = Math.max(0, Math.min(1, progress));
     content.style.transform = `translateX(-${clampedProgress * maxTranslate}px)`;
-  };
-  lenis.on('scroll', onScroll);
+  });
 
-  return () => {
+  function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+
+  onUnmounted(() => {
     window.removeEventListener('resize', setHeight);
     if (lenis) {
-      lenis.off('scroll', onScroll);
       lenis.destroy();
       lenis = null;
     }
-    // Reset styles
-    if (content) content.style.transform = 'translateX(0)';
-    if (wrapper) wrapper.style.height = 'auto';
-  };
-};
-
-
-const handleResize = () => {
-  if (isDesktop()) {
-    if (!desktopAnimationCleanup) {
-      desktopAnimationCleanup = setupDesktopAnimation();
-    }
-  } else {
-    if (desktopAnimationCleanup) {
-      desktopAnimationCleanup();
-      desktopAnimationCleanup = null;
-    }
-  }
-};
-
-onMounted(() => {
-  audioRefs.value.forEach((audio) => {
-    if (audio) {
-      audio.onended = () => {
-        isPlaying.value = false;
-        currentlyPlayingId.value = null;
-      };
-    }
   });
-
-  handleResize(); // Initial check
-  window.addEventListener('resize', handleResize);
-});
-
-onUnmounted(() => {
-  window.removeEventListener('resize', handleResize);
-  if (desktopAnimationCleanup) {
-    desktopAnimationCleanup();
-  }
 });
 </script>
 
 <style scoped>
-/* --- Base Styles (Mobile First) --- */
-.gallery-wrapper {
-  position: relative;
-  background-color: #111827;
-  padding: 3rem 1.5rem;
+.gallery-wrapper { 
+  position: relative; 
+  background-color: #111827; 
+}
+.sticky-container { 
+  position: sticky; 
+  top: 0; 
+  height: 100vh; 
+  overflow: hidden; 
+  display: flex; 
+  align-items: center; 
 }
 
-.sticky-container {
-  /* On mobile, it's just a simple container */
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+/* --- Header Styles --- */
+.header-content { 
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  padding: 3rem 4rem; 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: flex-start; 
+  z-index: 10; 
+}
+.header-left { pointer-events: none; }
+.header-right { 
+  pointer-events: all; 
+  padding-bottom: 2rem; /* Add a buffer to prevent overlap */
 }
 
-.header-content {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
+.main-heading { font-size: 2.25rem; font-weight: 800; color: white; }
+.sub-heading-link { text-decoration: none; color: inherit; }
+.sub-heading { font-family: serif; font-size: 1.125rem; color: #9ca3af; max-width: 28rem; text-align: right; margin-bottom: 0.5rem; transition: color 0.3s ease; }
+.read-more { display: block; text-align: right; font-weight: 600; color: white; opacity: 0.4; transition: opacity 0.3s ease; }
+.sub-heading-link:hover .read-more { opacity: 1; }
+.sub-heading-link:hover .sub-heading { color: white; }
 
-.main-heading {
-  font-size: 1.75rem;
-  font-weight: 800;
-  color: white;
-}
+/* --- Scrolling Content Styles --- */
+.scroll-content { display: flex; align-items: center; gap: 4rem; padding: 0 8rem; }
+.card { position: relative; flex-shrink: 0; width: 24rem; height: 24rem; border-radius: 0.75rem; overflow: hidden; color: white; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+.card-background { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; transition: transform 0.6s ease; }
+.card:hover .card-background { transform: scale(1.05); }
+.card-content { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 2rem; background-color: rgba(0, 0, 0, 0.5); transition: background-color 0.4s ease; }
+.card:hover .card-content { background-color: rgba(0, 0, 0, 0.2); }
+.title { font-size: 2.25rem; font-weight: 800; margin-bottom: 0.5rem; }
+.subtitle { font-family: serif; font-size: 1.125rem; color: #d1d5db; }
 
-.sub-heading-link {
-  text-decoration: none;
-  color: inherit;
-}
+/* --- Play Button & Indicator Styles --- */
+.play-button { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); width: 5rem; height: 5rem; background-color: rgba(255, 255, 255, 0.2); border-radius: 9999px; border: 2px solid rgba(255, 255, 255, 0.3); display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; opacity: 0; transition: all 0.4s ease; pointer-events: all; }
+.card:hover .play-button { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+.play-button:hover { background-color: rgba(255, 255, 255, 0.3); transform: translate(-50%, -50%) scale(1.1); }
+.play-button svg { width: 2.5rem; height: 2.5rem; margin-left: 5px; }
+.play-button:hover svg { filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)); }
+.playing-indicator { position: absolute; bottom: 1.5rem; right: 1.5rem; opacity: 0.7; }
 
-.sub-heading {
-  font-family: serif;
-  font-size: 1rem;
-  color: #9ca3af;
-  margin-bottom: 0.5rem;
-  transition: color 0.3s ease;
-}
-
-.read-more {
-  font-weight: 600;
-  color: white;
-  opacity: 0.4;
-  transition: opacity 0.3s ease;
-}
-
-.sub-heading-link:hover .read-more {
-  opacity: 1;
-}
-
-.sub-heading-link:hover .sub-heading {
-  color: white;
-}
-
-.scroll-content {
-  display: flex;
-  gap: 1.5rem;
-  overflow-x: auto; /* Enable horizontal scrolling */
-  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-  scrollbar-width: none; /* Hide scrollbar for Firefox */
-}
-
-.scroll-content::-webkit-scrollbar {
-  display: none; /* Hide scrollbar for Chrome, Safari, and Opera */
-}
-
-.card {
-  position: relative;
-  flex-shrink: 0;
-  width: 18rem;
-  height: 18rem;
-  border-radius: 0.75rem;
-  overflow: hidden;
-  color: white;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-}
-
-.card-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  transition: transform 0.6s ease;
-}
-
-.card:hover .card-background {
-  transform: scale(1.05);
-}
-
-.card-content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 2rem;
-  background-color: rgba(0, 0, 0, 0.5);
-  transition: background-color 0.4s ease;
-}
-
-.card:hover .card-content {
-  background-color: rgba(0, 0, 0, 0.2);
-}
-
-.title {
-  font-size: 1.75rem;
-  font-weight: 800;
-  margin-bottom: 0.5rem;
-}
-
-.subtitle {
-  font-family: serif;
-  font-size: 1rem;
-  color: #d1d5db;
-}
-
-.play-button {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.8);
-  width: 5rem;
-  height: 5rem;
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 9999px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  cursor: pointer;
-  opacity: 0;
-  transition: all 0.4s ease;
-  pointer-events: all;
-}
-
-.card:hover .play-button {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-}
-
-.play-button:hover {
-  background-color: rgba(255, 255, 255, 0.3);
-  transform: translate(-50%, -50%) scale(1.1);
-}
-
-.play-button svg {
-  width: 2.5rem;
-  height: 2.5rem;
-  margin-left: 5px;
-}
-
-.play-button:hover svg {
-  filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
-}
-
-.playing-indicator {
-  position: absolute;
-  bottom: 1.5rem;
-  right: 1.5rem;
-  opacity: 0.7;
-}
-
-
-/* --- Desktop Styles --- */
-@media (min-width: 769px) {
-  .gallery-wrapper {
-    padding: 0; /* Reset padding */
-  }
-
+/* --- Responsive Styles for Mobile --- */
+@media (max-width: 768px) {
   .sticky-container {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    flex-direction: row; /* Reset direction */
+    /* On mobile, we add padding to the top to make space for the header,
+       and align-items: flex-start to push the gallery to that space. */
+    padding-top: 16rem; /* Generous space for the header */
+    align-items: flex-start; /* Align gallery to the top of the remaining space */
   }
 
   .header-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 3rem 4rem;
-    display: flex;
-    flex-direction: row; /* Horizontal layout */
-    justify-content: space-between;
-    align-items: flex-start;
-    z-index: 10;
-  }
-
-  .header-left {
-    pointer-events: none;
+    flex-direction: column; /* Stack header items vertically */
+    align-items: flex-start; /* Align to the left */
+    padding: 2rem 1.5rem; /* Reduce padding */
+    gap: 1rem; /* Add some space between title and subtitle */
   }
 
   .header-right {
-    pointer-events: all;
+    width: 100%; /* Allow it to take full width */
+    padding-bottom: 0; /* Reset padding on mobile */
   }
 
   .main-heading {
-    font-size: 2.25rem;
+    font-size: 1.75rem; /* Slightly smaller title */
   }
 
   .sub-heading {
-    font-size: 1.125rem;
-    max-width: 36rem;
-    text-align: right;
+    max-width: 100%; /* Remove max-width constraint */
+    text-align: left; /* Align text to the left */
+    font-size: 1rem; /* Slightly smaller font */
   }
 
   .read-more {
-    text-align: right;
+    text-align: left; /* Align "read more" to the left */
   }
 
   .scroll-content {
-    display: flex;
-    align-items: center;
-    gap: 4rem;
-    padding: 0 8rem;
-    overflow-x: visible; /* Disable scrolling, will be controlled by JS */
+    padding: 0 1.5rem; /* Reduce padding for the cards container */
+    gap: 1.5rem; /* Reduce gap between cards */
   }
 
   .card {
-    width: 24rem;
-    height: 24rem;
+    width: 18rem; /* Smaller cards */
+    height: 18rem;
   }
 
   .title {
-    font-size: 2.25rem;
+    font-size: 1.75rem;
   }
 
   .subtitle {
-    font-size: 1.125rem;
+    font-size: 1rem;
   }
 }
 </style>

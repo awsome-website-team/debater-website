@@ -1,44 +1,39 @@
 <template>
-  <section id="culture" class="team-culture-section">
-    <div class="grid-container">
-      <!-- Left Column: Sticky Text Content (Desktop Only) -->
-      <div class="text-column">
-        <div class="text-content-wrapper">
-          <Transition name="fade" mode="out-in">
-            <div :key="activeChapterIndex">
-              <h2 class="chapter-title">{{ chapters[activeChapterIndex].title }}</h2>
-              <p class="chapter-description">{{ chapters[activeChapterIndex].description }}</p>
-            </div>
-          </Transition>
+  <div ref="galleryWrapper" class="gallery-wrapper">
+    <div class="sticky-container">
+      
+      <!-- Header Content -->
+      <div class="header-content">
+        <h2 class="main-heading">为什么加入我们</h2>
+        <Transition name="fade" mode="out-in">
+          <h3 class="chapter-heading" :key="activeChapter.title">{{ activeChapter.title }}</h3>
+        </Transition>
+      </div>
+
+      <!-- "Next Chapter" Button -->
+      <button @click="nextChapter" class="next-chapter-button">
+        <span>下一组</span>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75% 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" /></svg>
+      </button>
+
+      <!-- Scrolling Content: Now dynamically displays ONLY the active chapter's images -->
+      <div ref="scrollContent" class="scroll-content">
+        <div v-for="(imageSrc, index) in activeChapter.images" 
+             :key="activeChapter.title + '-' + index" 
+             class="card image-card">
+          <img :src="imageSrc" alt="Team culture image" class="gallery-image" />
         </div>
       </div>
 
-      <!-- Right Column: Content Flow -->
-      <div class="gallery-column">
-        <div class="gallery-content-wrapper">
-          <!-- Loop through each chapter -->
-          <div v-for="(chapter, index) in chapters" :key="index" class="chapter-group">
-            <!-- Mobile-only Text Header -->
-            <div class="mobile-header">
-              <h2 class="chapter-title">{{ chapter.title }}</h2>
-              <p class="chapter-description">{{ chapter.description }}</p>
-            </div>
-            <!-- The Gallery itself -->
-            <div class="image-group" :data-index="index">
-              <img v-for="(image, imgIndex) in chapter.images" :key="image" 
-                   :src="image"
-                   alt="Team culture image"
-                   :class="['image-placeholder', { 'is-active': imgIndex === 0 }]" />
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, computed, watch, nextTick } from 'vue';
+import Lenis from 'lenis';
+
+// Image Imports
 import teambuilding1 from '@/assets/family/first-team-building-01.jpg'
 import teambuilding2 from '@/assets/family/first-team-building-02.jpg'
 import teambuilding3 from '@/assets/family/first-team-building-03.jpg'
@@ -49,203 +44,199 @@ import activity1 from '@/assets/family/activity/1.jpeg'
 import activity2 from '@/assets/family/activity/2.jpeg'
 import activity3 from '@/assets/family/activity/3.png'
 
-
-const activeChapterIndex = ref(0);
-
 const chapters = [
-  {
-    title: '家庭',
-    description: '如果用一个词来描述每个新成员进入辩队的感受的话，我想会是家庭，每个学长姐都很热情地对待你',
-    images: [
-      teambuilding1,
-      teambuilding2,
-      teambuilding3
-    ]
-  },
-  {
-    title: '',
-    description: '',
-    images: [
-    competition1,
-    competition2,
-    competition3
-    ]
-  },
-  {
-    title: '',
-    description: '',
-    images: [
-      activity1,
-      activity2,
-      activity3,
-    ]
-  }
+  { title: '温馨的团队氛围', images: [teambuilding1, teambuilding2, teambuilding3, activity1] },
+  { title: '激烈的赛场交锋', images: [competition1, competition2, competition3] },
+  { title: '丰富的日常生活', images: [activity2, activity3, teambuilding1] }
 ];
 
-let observer;
+const currentChapterIndex = ref(0);
+const activeChapter = computed(() => chapters[currentChapterIndex.value]);
 
-function setupClickToScroll() {
-  const imageGroups = document.querySelectorAll('.image-group');
-  imageGroups.forEach(group => {
-    const images = group.querySelectorAll('.image-placeholder');
-    let currentIndex = 0;
+const galleryWrapper = ref(null);
+const scrollContent = ref(null);
+let lenis;
 
-    images.forEach((img, index) => {
-      img.addEventListener('click', () => {
-        currentIndex = (index + 1) % images.length;
-        const nextImage = images[currentIndex];
+// Function to calculate and set the required vertical height for the scroll animation
+const setHeight = () => {
+  const wrapper = galleryWrapper.value;
+  const content = scrollContent.value;
+  if (!wrapper || !content) return;
 
-        images.forEach(i => i.classList.remove('is-active'));
-        nextImage.classList.add('is-active');
-        
-        const scrollLeft = nextImage.offsetLeft - (group.offsetWidth / 2) + (nextImage.offsetWidth / 2);
+  if (content.scrollWidth > 0) {
+    wrapper.style.height = `${content.scrollWidth * 0.8}px`;
+  } else {
+    wrapper.style.height = `100vh`;
+  }
+};
 
-        group.scrollTo({
-          left: scrollLeft,
-          behavior: 'smooth'
-        });
-      });
-    });
-  });
-}
+// The core function to switch chapters
+const nextChapter = () => {
+  currentChapterIndex.value = (currentChapterIndex.value + 1) % chapters.length;
+};
 
+// Watch for chapter changes to re-calculate height and reset scroll
+watch(currentChapterIndex, async () => {
+  // Wait for the DOM to update with the new images
+  await nextTick();
+  
+  // --- BUG FIX: More robust reset logic ---
+  // 1. Forcefully reset the horizontal transform to 0. This is the key fix.
+  if (scrollContent.value) {
+    scrollContent.value.style.transform = 'translateX(0px)';
+  }
 
-onMounted(() => {
-  const imageGroups = document.querySelectorAll('.image-group');
-  observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          activeChapterIndex.value = parseInt(entry.target.dataset.index, 10);
-        }
-      });
-    },
-    { rootMargin: '-50% 0px -50% 0px', threshold: 0 }
-  );
-  imageGroups.forEach((group) => observer.observe(group));
+  // 2. Recalculate the wrapper height based on the new content.
+  setHeight();
 
-  setupClickToScroll();
+  // 3. Snap the vertical scroll to the top of the component.
+  if (lenis && galleryWrapper.value) {
+    lenis.scrollTo(galleryWrapper.value.offsetTop, { immediate: true });
+  }
 });
 
-onUnmounted(() => {
-  if (observer) observer.disconnect();
+onMounted(() => {
+  const wrapper = galleryWrapper.value;
+  const content = scrollContent.value;
+  if (!wrapper || !content) return;
+
+  setHeight();
+  window.addEventListener('resize', setHeight);
+
+  lenis = new Lenis();
+  lenis.on('scroll', ({ scroll }) => {
+    const rect = wrapper.getBoundingClientRect();
+    if (rect.top > window.innerHeight || rect.bottom < 0) return;
+    
+    const scrollableDistance = wrapper.scrollHeight - window.innerHeight;
+    const maxTranslate = content.scrollWidth - window.innerWidth;
+    
+    if (scrollableDistance <= 0 || maxTranslate <= 0) {
+      content.style.transform = `translateX(0px)`;
+      return;
+    }
+    
+    const progress = (scroll - wrapper.offsetTop) / scrollableDistance;
+    const clampedProgress = Math.max(0, Math.min(1, progress));
+    
+    content.style.transform = `translateX(-${clampedProgress * maxTranslate}px)`;
+  });
+
+  function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+
+  onUnmounted(() => {
+    window.removeEventListener('resize', setHeight);
+    if (lenis) { lenis.destroy(); lenis = null; }
+  });
 });
 </script>
 
 <style scoped>
-.team-culture-section { padding: 4rem 0; background-color: #f3f4f6; color: #111827; }
-.grid-container { max-width: 1536px; margin: 0 auto; padding: 0 1rem; }
-
-/* --- Mobile-First Base Styles --- */
-.text-column {
-  display: none; /* Hide desktop sticky text by default */
+.gallery-wrapper { 
+  position: relative; 
+  background-color: #111827;
 }
-.gallery-column {
-  grid-column: 1 / -1; /* Take full width */
+.sticky-container { 
+  position: sticky; 
+  top: 0; 
+  height: 100vh; 
+  overflow: hidden; 
+  display: flex; 
+  align-items: flex-start;
+  padding-top: 12rem;
+  box-sizing: border-box;
 }
-.gallery-content-wrapper {
+.header-content { 
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  padding: 3rem 4rem; 
+  z-index: 10; 
+  pointer-events: none;
   display: flex;
   flex-direction: column;
-  gap: 4rem;
+  gap: 0.5rem;
 }
-.mobile-header {
-  margin-bottom: 1.5rem;
-  padding: 0 0.5rem;
+.main-heading { 
+  font-size: 2.25rem; 
+  font-weight: 800; 
+  color: white; 
 }
-.chapter-title {
-  font-size: 2.25rem;
-  font-weight: 800;
-  margin-bottom: 0.75rem;
+.chapter-heading {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #9ca3af;
 }
-.chapter-description {
-  font-size: 1rem;
-  color: #4b5563;
+.scroll-content { 
+  display: flex; 
+  align-items: center; 
+  gap: 2.5rem; 
+  padding: 0 8rem; 
 }
-
-/* --- Gallery Styles (Shared) --- */
-.image-group {
-  position: relative;
+.card {
+  flex-shrink: 0;
+  width: 28rem;
+  border-radius: 1.25rem;
+  background-color: #1f2937;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: 1rem;
-  overflow-x: auto;
-  padding: 0 1.25rem;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  justify-content: center;
+  overflow: hidden;
 }
-.image-group::-webkit-scrollbar {
-  display: none;
-}
-.image-placeholder {
-  flex: 0 0 90%;
-  width: 90%;
+.gallery-image {
+  width: 100%;
   height: auto;
   display: block;
-  border-radius: 0.75rem;
-  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+  transition: transform 0.5s ease;
+}
+.card:hover .gallery-image {
+  transform: scale(1.05);
+}
+.next-chapter-button {
+  position: absolute;
+  bottom: 3rem;
+  right: 4rem;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  font-weight: 600;
   cursor: pointer;
-  opacity: 0.4;
-  transform: scale(0.95);
-  transition: transform 0.5s ease, opacity 0.5s ease;
+  transition: all 0.3s ease;
 }
-.image-placeholder.is-active {
-  opacity: 1;
-  transform: scale(1);
+.next-chapter-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
 }
-
-/* --- Desktop Layout (@media query) --- */
-@media (min-width: 1024px) {
-  .team-culture-section { padding: 8rem 0; }
-  .grid-container {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 2rem;
-    padding: 0;
-  }
-  .text-column {
-    display: block;
-    grid-column: 1 / span 5;
-    position: relative;
-  }
-  .text-content-wrapper {
-    position: sticky;
-    top: 8rem;
-    height: calc(100vh - 16rem);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0 2rem;
-  }
-  .gallery-column {
-    grid-column: 7 / span 6;
-  }
-  .gallery-content-wrapper {
-    gap: 5rem;
-    padding-top: 4rem;
-    padding-bottom: 4rem;
-  }
-  .mobile-header {
-    display: none;
-  }
-  .chapter-title {
-    font-size: 3rem;
-  }
-  .chapter-description {
-    font-size: 1.125rem;
-  }
-  .image-group {
-    gap: 2rem;
-    padding: 0 2.5%;
-  }
-  .image-placeholder {
-    flex: 0 0 95%;
-    width: 95%;
-    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
-  }
+.next-chapter-button svg {
+  width: 1.25rem;
+  height: 1.25rem;
 }
-
-/* --- Transition --- */
-.fade-enter-active, .fade-leave-active { transition: opacity 0.5s ease; }
+.fade-enter-active, .fade-leave-active { transition: opacity 0.4s ease; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
+
+@media (max-width: 768px) {
+  .sticky-container {
+    padding-top: 10rem;
+  }
+  .header-content { padding: 2rem 1.5rem; }
+  .main-heading { font-size: 1.75rem; }
+  .chapter-heading { font-size: 1.25rem; }
+  .scroll-content { padding: 0 1.5rem; gap: 1.5rem; }
+  .card { 
+    width: 75vw; 
+    border-radius: 1rem; 
+  }
+  .next-chapter-button { bottom: 2rem; right: 1.5rem; padding: 0.5rem 1rem; font-size: 0.875rem; }
+  .next-chapter-button svg { display: none; }
+}
 </style>
