@@ -38,40 +38,61 @@ const route = useRoute();
 let observer;
 
 const setupObserver = () => {
-  // Disconnect previous observer if it exists
   if (observer) {
     observer.disconnect();
   }
-
-  // Query for the light-bg-section which is in the child component
   const lightBgSection = document.querySelector('#light-bg-section');
-  
   if (!lightBgSection) {
-    isDarkText.value = false; // Default to light text if section not found
+    isDarkText.value = false;
     return;
   }
-
   const options = {
     root: null,
-    rootMargin: "-100px 0px 0px 0px", // Trigger when the top of the section is 100px from the top of the viewport
+    rootMargin: "-100px 0px 0px 0px",
     threshold: 0,
   };
-
   observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       isDarkText.value = entry.isIntersecting;
     });
   }, options);
-
   observer.observe(lightBgSection);
 };
 
-// Watch for route changes to re-run the observer setup
+const preloadAssets = () => {
+  // This logic runs only in the production build to avoid spamming the dev server
+  if (import.meta.env.PROD) {
+    const assetModules = import.meta.glob([
+      '/src/assets/members/*.{jpg,jpeg,png}',
+      '/src/assets/family/**/*.{jpg,jpeg,png}',
+    ]);
+
+    for (const path in assetModules) {
+      // Vite's dynamic import returns a function that resolves to the module.
+      // We don't need to call it; referencing the path is enough for the prefetch link.
+      // However, to be robust, let's resolve the URL properly.
+      assetModules[path]().then(module => {
+        const link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.href = module.default; // module.default contains the final URL
+        document.head.appendChild(link);
+      });
+    }
+  }
+};
+
+onMounted(() => {
+  // Setup the intersection observer for nav text color
+  // Use a timeout to ensure the child component's DOM is ready
+  setTimeout(setupObserver, 100);
+  
+  // Preload key assets after the main app is mounted
+  preloadAssets();
+});
+
 watch(() => route.path, () => {
-  // We need to wait for the new view to be mounted to the DOM
   setTimeout(setupObserver, 100);
 }, { immediate: true });
-
 
 onUnmounted(() => {
   if (observer) {

@@ -13,7 +13,7 @@
       <!-- "Next Chapter" Button -->
       <button @click="nextChapter" class="next-chapter-button">
         <span>下一组</span>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75% 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" /></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75% 0 01.75-.75h10.638L10.23 5.29a.75.75% 0 111.04-1.08l5.5 5.25a.75.75% 0 010 1.08l-5.5 5.25a.75.75% 0 11-1.04-1.08l4.158-3.96H3.75A.75.75% 0 013 10z" clip-rule="evenodd" /></svg>
       </button>
 
       <!-- Scrolling Content: Now dynamically displays ONLY the active chapter's images -->
@@ -37,17 +37,26 @@ import Lenis from 'lenis';
 import teambuilding1 from '@/assets/family/first-team-building-01.jpg'
 import teambuilding2 from '@/assets/family/first-team-building-02.jpg'
 import teambuilding3 from '@/assets/family/first-team-building-03.jpg'
+import teambuilding4 from '@/assets/family/first-team-building-04.jpg'
+import teambuilding5 from '@/assets/family/first-team-building-05.jpg'
 import competition1 from '@/assets/family/competition/1.jpeg'
 import competition2 from '@/assets/family/competition/2.jpg'
 import competition3 from '@/assets/family/competition/3.jpeg'
+import competition4 from '@/assets/family/competition/4.jpg'
+import competition5 from '@/assets/family/competition/5.jpg'
+import competition6 from '@/assets/family/competition/6.jpg'
+import competition7 from '@/assets/family/competition/7.jpg'
 import activity1 from '@/assets/family/activity/1.jpeg'
-import activity2 from '@/assets/family/activity/2.jpeg'
+import activity2 from '@/assets/family/activity/2.jpg'
 import activity3 from '@/assets/family/activity/3.png'
+import activity4 from '@/assets/family/activity/4.jpg'
+import activity5 from '@/assets/family/activity/5.jpeg'
+import activity6 from '@/assets/family/activity/6.jpg'
 
 const chapters = [
-  { title: '温馨的团队氛围', images: [teambuilding1, teambuilding2, teambuilding3, activity1] },
-  { title: '激烈的赛场交锋', images: [competition1, competition2, competition3] },
-  { title: '丰富的日常生活', images: [activity2, activity3, teambuilding1] }
+  { title: '温馨的团队氛围', images: [teambuilding1, teambuilding2, teambuilding3, teambuilding4, teambuilding5] },
+  { title: '激烈的赛场交锋', images: [competition1, competition2, competition3,competition4, competition5, competition6, competition7] },
+  { title: '丰富的日常生活', images: [activity1,activity2, activity3, activity4, activity5, activity6 ] }
 ];
 
 const currentChapterIndex = ref(0);
