@@ -1,39 +1,51 @@
 <template>
-  <div ref="galleryWrapper" class="gallery-wrapper">
-    <div class="sticky-container">
-      
-      <!-- Header Content -->
-      <div class="header-content">
-        <h2 class="main-heading">为什么加入我们</h2>
-        <Transition name="fade" mode="out-in">
-          <h3 class="chapter-heading" :key="activeChapter.title">{{ activeChapter.title }}</h3>
-        </Transition>
-      </div>
-
-      <!-- Gallery with Navigation Arrows -->
-      <div class="gallery-navigation-wrapper">
-        <!-- Left Arrow -->
-        <button @click="prevChapter" class="gallery-arrow left-arrow">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M17 10a.75.75 0 01-.75.75H5.638l4.132 3.96a.75.75 0 11-1.04 1.08l-5.5-5.25a.75.75 0 010-1.08l5.5-5.25a.75.75 0 111.04 1.08L5.638 9.25H16.25A.75.75 0 0117 10z" clip-rule="evenodd" /></svg>
-        </button>
-
-        <!-- Scrolling Content -->
-        <div ref="scrollContent" class="scroll-content">
-          <div v-for="(imageSrc, index) in activeChapter.images" 
-               :key="activeChapter.title + '-' + index" 
-               class="card image-card">
-            <img :src="imageSrc" alt="Team culture image" class="gallery-image" />
-          </div>
+  <section class="team-culture-container">
+    <div ref="galleryWrapper" class="gallery-wrapper">
+      <div class="sticky-container">
+        
+        <!-- Header Content -->
+        <div class="header-content">
+          <h2 class="main-heading">为什么加入我们</h2>
+          <Transition name="fade" mode="out-in">
+            <h3 class="chapter-heading" :key="activeChapter.title">{{ activeChapter.title }}</h3>
+          </Transition>
         </div>
 
-        <!-- Right Arrow -->
-        <button @click="nextChapter" class="gallery-arrow right-arrow">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" /></svg>
-        </button>
-      </div>
+        <!-- Gallery with Navigation Arrows -->
+        <div class="gallery-navigation-wrapper">
+          <!-- Left Arrow -->
+          <button @click="prevChapter" class="gallery-arrow left-arrow">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M17 10a.75.75 0 01-.75.75H5.638l4.132 3.96a.75.75 0 11-1.04 1.08l-5.5-5.25a.75.75 0 010-1.08l5.5-5.25a.75.75 0 111.04 1.08L5.638 9.25H16.25A.75.75 0 0117 10z" clip-rule="evenodd" /></svg>
+          </button>
 
+          <!-- Scrolling Content -->
+          <div ref="scrollContent" class="scroll-content">
+            <div v-for="(imageSrc, index) in activeChapter.images" 
+                :key="activeChapter.title + '-' + index" 
+                class="card image-card">
+              <img :src="imageSrc" alt="Team culture image" class="gallery-image" />
+            </div>
+          </div>
+
+          <!-- Right Arrow -->
+          <button @click="nextChapter" class="gallery-arrow right-arrow">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" /></svg>
+          </button>
+        </div>
+
+      </div>
     </div>
-  </div>
+
+    <!-- Video Section -->
+    <div class="video-section">
+      <h2 class="video-title">2025 招新宣传片</h2>
+      <div class="video-player-wrapper">
+        <div class="responsive-iframe-container">
+          <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=115122857117928&bvid=BV1gKaGzSEni&cid=32071811580&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 
 <script setup>
@@ -186,9 +198,11 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+.team-culture-container {
+  background-color: #111827;
+}
 .gallery-wrapper { 
   position: relative; 
-  background-color: #111827;
   /* Add a min-height to prevent collapse before JS runs */
   min-height: 100vh; 
 }
@@ -300,6 +314,39 @@ onUnmounted(() => {
 .fade-enter-active, .fade-leave-active { transition: opacity 0.4s ease; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
 
+/* --- Video Section Styles --- */
+.video-section {
+  padding: 6rem 4rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  text-align: center;
+}
+.video-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 2.5rem;
+}
+.video-player-wrapper {
+  border-radius: 1.25rem;
+  overflow: hidden; /* Ensures the video corners are rounded */
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+.responsive-iframe-container {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+}
+.responsive-iframe-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+
 @media (max-width: 768px) {
   .header-content { padding: 2rem 1.5rem; }
   .main-heading { font-size: 1.75rem; }
@@ -322,6 +369,17 @@ onUnmounted(() => {
   .gallery-arrow svg {
     width: 1.25rem;
     height: 1.25rem;
+  }
+
+  .video-section {
+    padding: 4rem 1.5rem;
+  }
+  .video-title {
+    font-size: 1.75rem;
+    margin-bottom: 2rem;
+  }
+  .video-player-wrapper {
+    border-radius: 1rem;
   }
 }
 </style>
