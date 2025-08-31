@@ -10,7 +10,8 @@
         <div class="header-right">
           <router-link to="/why-we-debate" class="sub-heading-link">
             <p class="sub-heading">
-              柏拉图在《申辩篇》中记载，苏格拉底认为自己唯一的智慧便是知道自己一无所知。与赛场上的针锋相对不同，每个辩论片段带给我们的都是虔诚的谦卑
+              辩论是一个重新认识世界的过程
+        ，我们每个人或多或少都被一两个振聋发聩的辩论片段吸引，那正是思想突破既有牢笼，向着更自由、更辽阔的世界边界试探性飞翔的迷人时刻....."
             </p>
             <span class="read-more">深入阅读 &rarr;</span>
           </router-link>
@@ -57,10 +58,10 @@ const albums = ref([
   { id: 2, title: '金钱是不是万恶之源', subtitle: '', image: moneyDebateImg, audio: moneyDebateAudio },
   { id: 3, title: '人终将孤独还是不孤独', subtitle: '', image: lonelyDebateImgeImg , audio: lonelyDebateAudio},
   { id: 4, title: '我更愿意当一个合群/不合群的大人', subtitle: '', image: sociableDebateImgeImg , audio: socibaleDebateAudio},
-  { id: 5, title: '教育辩', subtitle: '通才教育还是专才教育更重要', image: 'https://placehold.co/600x600/6b7280/ffffff?text=Edu', audio: null },
-  { id: 6, title: '艺术辩', subtitle: '艺术是否应该有道德底线', image: 'https://placehold.co/600x600/9ca3af/ffffff?text=Art', audio: null },
-  { id: 7, title: '历史辩', subtitle: '时势造英雄还是英雄造时势', image: 'https://placehold.co/600x600/d1d5db/111827?text=History', audio: null },
-  { id: 8, title: '未来辩', subtitle: '人工智能能否拥有真正的创造力', image: 'https://placehold.co/600x600/fde68a/111827?text=Future', audio: null },
+  // { id: 5, title: '教育辩', subtitle: '通才教育还是专才教育更重要', image: 'https://placehold.co/600x600/6b7280/ffffff?text=Edu', audio: null },
+  // { id: 6, title: '艺术辩', subtitle: '艺术是否应该有道德底线', image: 'https://placehold.co/600x600/9ca3af/ffffff?text=Art', audio: null },
+  // { id: 7, title: '历史辩', subtitle: '时势造英雄还是英雄造时势', image: 'https://placehold.co/600x600/d1d5db/111827?text=History', audio: null },
+  // { id: 8, title: '未来辩', subtitle: '人工智能能否拥有真正的创造力', image: 'https://placehold.co/600x600/fde68a/111827?text=Future', audio: null },
 ]);
 
 const audioRefs = ref([]);
