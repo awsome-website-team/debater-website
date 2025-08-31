@@ -72,35 +72,44 @@ const activeChapter = computed(() => chapters[currentChapterIndex.value]);
 const galleryWrapper = ref(null);
 const scrollContent = ref(null);
 let lenis;
+let rafHandle;
 
-const setHeight = () => {
+const setFinalHeight = () => {
   const wrapper = galleryWrapper.value;
   const content = scrollContent.value;
   if (!wrapper || !content) return;
   wrapper.style.height = content.scrollWidth > 0 ? `${content.scrollWidth * 0.8}px` : `100vh`;
 };
 
-const waitForImagesAndSetHeight = () => {
+const updateGalleryHeight = () => {
+  const wrapper = galleryWrapper.value;
   const content = scrollContent.value;
-  if (!content) return;
+  if (!wrapper || !content) return;
 
-  const images = Array.from(content.querySelectorAll('img'));
-  if (images.length === 0) {
-    setHeight();
-    return;
-  }
+  // 1. Set a provisional height immediately for instant scroll hijacking
+  const numImages = activeChapter.value.images.length;
+  // Estimate: average card width of 450px
+  wrapper.style.height = `${numImages * 450 * 0.8}px`; 
 
-  const promises = images.map(img => 
-    new Promise(resolve => {
-      if (img.complete) return resolve();
-      img.onload = resolve;
-      img.onerror = resolve; // Also resolve on error to avoid getting stuck
-    })
-  );
+  // 2. Wait for images to load to calculate the final, accurate height
+  nextTick(() => {
+    const images = Array.from(content.querySelectorAll('img'));
+    if (images.length === 0) {
+      setFinalHeight(); // Set to 100vh if no images
+      return;
+    }
 
-  Promise.all(promises).then(() => {
-    // Ensure the DOM has updated with image dimensions before setting height
-    nextTick(setHeight);
+    const imagePromises = images.map(img => 
+      new Promise(resolve => {
+        if (img.complete) return resolve();
+        img.onload = resolve;
+        img.onerror = resolve;
+      })
+    );
+
+    Promise.all(imagePromises).then(() => {
+      nextTick(setFinalHeight);
+    });
   });
 };
 
@@ -113,51 +122,66 @@ const prevChapter = () => {
   currentChapterIndex.value = (currentChapterIndex.value - 1 + chapters.length) % chapters.length;
 };
 
-watch(currentChapterIndex, async () => {
-  await nextTick();
-  if (scrollContent.value) {
-    scrollContent.value.style.transform = 'translateX(0px)';
-  }
-  waitForImagesAndSetHeight();
-  if (lenis && galleryWrapper.value) {
-    lenis.scrollTo(galleryWrapper.value.offsetTop, { immediate: true });
-  }
+watch(currentChapterIndex, () => {
+  nextTick(() => {
+    if (scrollContent.value) {
+      scrollContent.value.style.transform = 'translateX(0px)';
+    }
+    updateGalleryHeight();
+    if (lenis && galleryWrapper.value) {
+      lenis.scrollTo(galleryWrapper.value.offsetTop, { immediate: true });
+    }
+  });
 });
 
 onMounted(() => {
-  const wrapper = galleryWrapper.value;
-  const content = scrollContent.value;
-  if (!wrapper || !content) return;
+  nextTick(() => {
+    const wrapper = galleryWrapper.value;
+    const content = scrollContent.value;
+    if (!wrapper || !content) return;
 
-  waitForImagesAndSetHeight();
-  window.addEventListener('resize', setHeight);
+    // --- One-time Lenis Initialization ---
+    lenis = new Lenis();
+    lenis.on('scroll', ({ scroll }) => {
+      const rect = wrapper.getBoundingClientRect();
+      if (rect.top > window.innerHeight || rect.bottom < 0) return;
+      
+      const scrollableDistance = wrapper.scrollHeight - window.innerHeight;
+      const maxTranslate = content.scrollWidth - window.innerWidth;
+      
+      if (scrollableDistance <= 0 || maxTranslate <= 0) {
+        content.style.transform = `translateX(0px)`;
+        return;
+      }
+      
+      const progress = (scroll - wrapper.offsetTop) / scrollableDistance;
+      const clampedProgress = Math.max(0, Math.min(1, progress));
+      
+      content.style.transform = `translateX(-${clampedProgress * maxTranslate}px)`;
+    });
 
-  lenis = new Lenis();
-  lenis.on('scroll', ({ scroll }) => {
-    const rect = wrapper.getBoundingClientRect();
-    if (rect.top > window.innerHeight || rect.bottom < 0) return;
-    
-    const scrollableDistance = wrapper.scrollHeight - window.innerHeight;
-    const maxTranslate = content.scrollWidth - window.innerWidth;
-    
-    if (scrollableDistance <= 0 || maxTranslate <= 0) {
-      content.style.transform = `translateX(0px)`;
-      return;
+    function raf(time) {
+      lenis.raf(time);
+      rafHandle = requestAnimationFrame(raf);
     }
-    
-    const progress = (scroll - wrapper.offsetTop) / scrollableDistance;
-    const clampedProgress = Math.max(0, Math.min(1, progress));
-    
-    content.style.transform = `translateX(-${clampedProgress * maxTranslate}px)`;
-  });
+    rafHandle = requestAnimationFrame(raf);
+    // --- End of One-time Init ---
 
-  function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-  requestAnimationFrame(raf);
-
-  onUnmounted(() => {
-    window.removeEventListener('resize', setHeight);
-    if (lenis) { lenis.destroy(); lenis = null; }
+    // Initial gallery setup
+    updateGalleryHeight();
+    window.addEventListener('resize', updateGalleryHeight);
   });
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateGalleryHeight);
+  if (lenis) {
+    lenis.destroy();
+    lenis = null;
+  }
+  if (rafHandle) {
+    cancelAnimationFrame(rafHandle);
+  }
 });
 </script>
 
@@ -165,6 +189,8 @@ onMounted(() => {
 .gallery-wrapper { 
   position: relative; 
   background-color: #111827;
+  /* Add a min-height to prevent collapse before JS runs */
+  min-height: 100vh; 
 }
 .sticky-container { 
   position: sticky; 
