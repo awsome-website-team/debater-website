@@ -19,13 +19,24 @@
       <!-- Conditional Rendering: Members Grid OR Honors List -->
       <div class="content-wrapper">
         <!-- 1. Members Grid -->
-        <transition-group v-if="activeFilter !== '荣誉'" name="list" tag="div" class="members-grid">
+        <transition-group 
+          v-if="activeFilter !== '荣誉'" 
+          name="list" 
+          tag="div" 
+          class="members-grid"
+          :class="{ 'is-alumni-list': activeFilter === '往届' }"
+        >
           <div v-for="member in filteredMembers" :key="member.id" class="member-card">
             <div class="card-image-wrapper">
-              <img :src="member.image" :alt="member.name" class="card-image">
+              <img v-if="member.image" :src="member.image" :alt="member.name" class="card-image">
+              <div v-else class="card-image-placeholder">
+                <span>{{ member.name.charAt(0) }}</span>
+              </div>
             </div>
-            <h3 class="member-name">{{ member.name }}</h3>
-            <p class="member-title">{{ member.title }}</p>
+            <div class="member-info">
+              <h3 class="member-name">{{ member.name }}</h3>
+              <p class="member-title">{{ member.title }}</p>
+            </div>
           </div>
         </transition-group>
 
@@ -66,12 +77,13 @@ import lliImg from '@/assets/members/lli.jpg';
 // 22级
 import yiyijieImg from '@/assets/members/yiyijie.jpg';
 import coconutImg from '@/assets/members/yezi.png';
+import yyImg from '@/assets/members/yy.png';
 import sxImg from '@/assets/members/sx.jpg';
 import qiulanImg from '@/assets/members/qiulan.jpg';
 import gengqingjieImg from '@/assets/members/gengqingjie.jpg';
-import OOImg from '@/assets/members/OO.jpg';
+import OOImg from '@/assets/members/oo.png';
 import xianhaoImg from '@/assets/members/xianhao.jpg';
-// 往届
+// 21级
 import yinijieImg from '@/assets/members/yinijie.jpg';
 import yixuanjieImg from '@/assets/members/yixuan.png';
 import wenyunjieImg from '@/assets/members/wenyun.png';
@@ -81,10 +93,7 @@ import ziyueImg from '@/assets/members/ziyue.png';
 import sihuiImg from '@/assets/members/sihui.png';
 import zhuangyiImg from '@/assets/members/zhuangyi.png';
 
-
-
-
-const filters = [ '24级', '23级', '22级', '往届', '荣誉'];
+const filters = [ '24级', '23级', '22级', '21级', '往届', '荣誉'];
 const activeFilter = ref('24级');
 
 // --- DATA SOURCES ---
@@ -110,26 +119,40 @@ const members = ref([
   { id: 15, name: '周欣佳', title: '队员', category: '23级', image: xingjiajieImg },
   { id: 16, name: '冯立佳', title: '队员', category: '23级', image: lliImg },
   
-  // 22级 (8 members)i
+  // 22级 (8 members)
   { id: 17, name: '郑伊依', title: '前队长', category: '22级', image: yiyijieImg },
   { id: 18, name: '张潇', title: '队员', category: '22级', image: coconutImg },
-  { id: 19, name: '杨帅祥', title: '队员', category: '22级', image: sxImg },
+  { id: 19, name: '郑媛元', title: '队员', category: '22级', image: OOImg },
   { id: 20, name: '黄秋岚', title: '队员', category: '22级', image: qiulanImg },
-  { id: 21, name: '杨益', title: '队员', category: '22级', image: 'https://placehold.co/400x400/fde68a/111827?text=M' },
+  { id: 21, name: '杨益', title: '队员', category: '22级', image: yyImg },
   { id: 22, name: '耿晴', title: '队员', category: '22级', image: gengqingjieImg },
-  { id: 23, name: '郑媛元', title: '队员', category: '22级', image: OOImg },
+  { id: 23, name: '杨帅祥', title: '队员', category: '22级', image: sxImg },
   { id: 24, name: '荆显皓', title: '队员', category: '22级', image: xianhaoImg },
 
-  // 往届
-  { id: 25, name: '黄浩真', title: '前队长', category: '往届', image: dashiImg },
-  { id: 26, name: '王怡萱', title: '队员', category: '往届', image: yixuanjieImg },
-  { id: 27, name: '徐文韵', title: '队员', category: '往届', image: wenyunjieImg },
-  { id: 28, name: '蒋怡宁', title: '队员', category: '往届', image: yinijieImg }, 
-  { id: 29, name: '黄之乔', title: '队员', category: '往届', image: zhiqiaoImg },
-  { id: 30, name: '杨子越', title: '队员', category: '往届', image: ziyueImg },
-  { id: 31, name: '朱思慧', title: '队员', category: '往届', image: sihuiImg },
-  { id: 32, name: '庄毅', title: '队员', category: '往届', image: zhuangyiImg },
+  // 21级
+  { id: 25, name: '黄浩真', title: '前队长', category: '21级', image: dashiImg },
+  { id: 26, name: '王怡萱', title: '队员', category: '21级', image: yixuanjieImg },
+  { id: 27, name: '徐文韵', title: '队员', category: '21级', image: wenyunjieImg },
+  { id: 28, name: '蒋怡宁', title: '队员', category: '21级', image: yinijieImg }, 
+  { id: 29, name: '黄之乔', title: '队员', category: '21级', image: zhiqiaoImg },
+  { id: 30, name: '杨子越', title: '队员', category: '21级', image: ziyueImg },
+  { id: 31, name: '朱思慧', title: '队员', category: '21级', image: sihuiImg },
+  { id: 32, name: '庄毅', title: '队员', category: '21级', image: zhuangyiImg },
 
+  // 往届 (No images)
+  { id: 33, name: '严泽钰', title: '升学香港城市大学', category: '往届', image: null },
+  { id: 35, name: '翁燕冰', title: '升学香港科技大学', category: '往届', image: null },
+  { id: 38, name: '廖雪 ', title: '升学香港科技大学', category: '往届', image: null },
+  { id: 34, name: '安竹琳', title: '入职阿里巴巴', category: '往届', image: null },
+  { id: 36, name: '马永欣', title: '入职佳都科技', category: '往届', image: null },
+  { id: 37, name: '赵嘉彤', title: '入职转转', category: '往届', image: null },
+  { id: 39, name: '肖凯欣', title: '入职巨人网络', category: '往届', image: null },
+  { id: 40, name: '高言峰', title: '保研南京大学', category: '往届', image: null },
+  { id: 41, name: '潘东屿', title: '保研厦门大学', category: '往届', image: null },
+  { id: 42, name: '罗懿 ', title: '保研厦门大学', category: '往届', image: null },
+  { id: 43, name: '张诗怡', title: '保研厦门大学', category: '往届', image: null },
+  { id: 44, name: '张玉结', title: '保研西安交通大学', category: '往届', image: null },
+  { id: 45, name: '高艺彤', title: '保研中国人民大学', category: '往届', image: null },
 ]);
 
 const honors = ref([
@@ -144,7 +167,6 @@ const honors = ref([
 
 const filteredMembers = computed(() => {
   if (activeFilter.value === '全部') {
-    // Exclude '往届荣誉' as it's not a member category
     return members.value;
   }
   return members.value.filter(member => member.category === activeFilter.value);
@@ -171,29 +193,57 @@ const filteredMembers = computed(() => {
 .members-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
 @media (min-width: 768px) { .members-grid { grid-template-columns: repeat(4, 1fr); gap: 2.5rem; } }
 .member-card { text-align: center; }
+.member-info { text-align: center; } /* Keep text centered for default cards */
 .card-image-wrapper { width: 100%; padding-bottom: 100%; position: relative; border-radius: 9999px; overflow: hidden; margin-bottom: 1.5rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
 .card-image { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
 .member-name { font-size: 1.25rem; font-weight: 700; }
 .member-title { color: #9ca3af; }
 
+/* Placeholder for members without images */
+.card-image-placeholder { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #374151; display: flex; align-items: center; justify-content: center; }
+.card-image-placeholder span { font-size: 4rem; font-weight: 800; color: #9ca3af; }
+@media (max-width: 768px) { .card-image-placeholder span { font-size: 3rem; } }
+
+/* --- Special Styles for Alumni List --- */
+.members-grid.is-alumni-list {
+  gap: 0.75rem 2rem; /* Tighter vertical gap, wider horizontal */
+}
+@media (min-width: 768px) {
+  .members-grid.is-alumni-list {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on desktop */
+  }
+}
+.is-alumni-list .member-card {
+  padding: 0.25rem 0;
+}
+.is-alumni-list .card-image-wrapper {
+  display: none; /* Hide the image/placeholder circle */
+}
+.is-alumni-list .member-info {
+  display: flex;
+  align-items: baseline;
+  text-align: left;
+  gap: 0.5rem;
+}
+.is-alumni-list .member-name {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #d1d5db;
+  flex-shrink: 0; /* Prevent name from wrapping */
+}
+.is-alumni-list .member-title::before {
+  content: '-';
+  margin-right: 0.5rem;
+}
+
 /* Honors List Styles */
 .honors-list { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
 .honor-card { display: flex; align-items: baseline; gap: 1.5rem; background-color: #1f2937; padding: 1rem 2rem; border-radius: 0.5rem; width: 100%; max-width: 36rem; }
-.honor-year { font-size: 1rem; font-weight: 600; color: #fde68a; /* A gold-like color */ }
+.honor-year { font-size: 1rem; font-weight: 600; color: #fde68a; }
 .honor-title { font-size: 1.125rem; color: #e5e7eb; text-align: left; }
 
-/* Transition-group styles for both lists */
-.list-move,
-.list-enter-active,
-.list-leave-active {
-  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
-}
-.list-enter-from,
-.list-leave-to {
-  opacity: 0;
-  transform: scale(0.8);
-}
-.list-leave-active {
-  position: absolute;
-}
+/* Transition-group styles */
+.list-move, .list-enter-active, .list-leave-active { transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1); }
+.list-enter-from, .list-leave-to { opacity: 0; transform: scale(0.8); }
+.list-leave-active { position: absolute; }
 </style>

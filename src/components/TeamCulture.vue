@@ -10,19 +10,26 @@
         </Transition>
       </div>
 
-      <!-- "Next Chapter" Button -->
-      <button @click="nextChapter" class="next-chapter-button">
-        <span>下一组</span>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75% 0 01.75-.75h10.638L10.23 5.29a.75.75% 0 111.04-1.08l5.5 5.25a.75.75% 0 010 1.08l-5.5 5.25a.75.75% 0 11-1.04-1.08l4.158-3.96H3.75A.75.75% 0 013 10z" clip-rule="evenodd" /></svg>
-      </button>
+      <!-- Gallery with Navigation Arrows -->
+      <div class="gallery-navigation-wrapper">
+        <!-- Left Arrow -->
+        <button @click="prevChapter" class="gallery-arrow left-arrow">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M17 10a.75.75 0 01-.75.75H5.638l4.132 3.96a.75.75 0 11-1.04 1.08l-5.5-5.25a.75.75 0 010-1.08l5.5-5.25a.75.75 0 111.04 1.08L5.638 9.25H16.25A.75.75 0 0117 10z" clip-rule="evenodd" /></svg>
+        </button>
 
-      <!-- Scrolling Content: Now dynamically displays ONLY the active chapter's images -->
-      <div ref="scrollContent" class="scroll-content">
-        <div v-for="(imageSrc, index) in activeChapter.images" 
-             :key="activeChapter.title + '-' + index" 
-             class="card image-card">
-          <img :src="imageSrc" alt="Team culture image" class="gallery-image" />
+        <!-- Scrolling Content -->
+        <div ref="scrollContent" class="scroll-content">
+          <div v-for="(imageSrc, index) in activeChapter.images" 
+               :key="activeChapter.title + '-' + index" 
+               class="card image-card">
+            <img :src="imageSrc" alt="Team culture image" class="gallery-image" />
+          </div>
         </div>
+
+        <!-- Right Arrow -->
+        <button @click="nextChapter" class="gallery-arrow right-arrow">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" /></svg>
+        </button>
       </div>
 
     </div>
@@ -42,7 +49,7 @@ import teambuilding5 from '@/assets/family/first-team-building-05.jpg'
 import competition1 from '@/assets/family/competition/1.jpeg'
 import competition2 from '@/assets/family/competition/2.jpg'
 import competition3 from '@/assets/family/competition/3.jpeg'
-import competition4 from '@/assets/family/competition/4.jpg'
+import competition4 from '@/assets/family/competition/4.png'
 import competition5 from '@/assets/family/competition/5.jpg'
 import competition6 from '@/assets/family/competition/6.jpg'
 import competition7 from '@/assets/family/competition/7.jpg'
@@ -55,8 +62,8 @@ import activity6 from '@/assets/family/activity/6.jpg'
 
 const chapters = [
   { title: '温馨的团队氛围', images: [teambuilding1, teambuilding2, teambuilding3, teambuilding4, teambuilding5] },
-  { title: '激烈的赛场交锋', images: [competition1, competition2, competition3,competition4, competition5, competition6, competition7] },
-  { title: '丰富的日常生活', images: [activity1,activity2, activity3, activity4, activity5, activity6 ] }
+  { title: '优秀的带赛体系', images: [competition1, competition2, competition3,competition4, competition5, competition6, competition7] },
+  { title: '丰富的日常活动', images: [activity1,activity2, activity3, activity4, activity5, activity6 ] }
 ];
 
 const currentChapterIndex = ref(0);
@@ -66,39 +73,52 @@ const galleryWrapper = ref(null);
 const scrollContent = ref(null);
 let lenis;
 
-// Function to calculate and set the required vertical height for the scroll animation
 const setHeight = () => {
   const wrapper = galleryWrapper.value;
   const content = scrollContent.value;
   if (!wrapper || !content) return;
-
-  if (content.scrollWidth > 0) {
-    wrapper.style.height = `${content.scrollWidth * 0.8}px`;
-  } else {
-    wrapper.style.height = `100vh`;
-  }
+  wrapper.style.height = content.scrollWidth > 0 ? `${content.scrollWidth * 0.8}px` : `100vh`;
 };
 
-// The core function to switch chapters
+const waitForImagesAndSetHeight = () => {
+  const content = scrollContent.value;
+  if (!content) return;
+
+  const images = Array.from(content.querySelectorAll('img'));
+  if (images.length === 0) {
+    setHeight();
+    return;
+  }
+
+  const promises = images.map(img => 
+    new Promise(resolve => {
+      if (img.complete) return resolve();
+      img.onload = resolve;
+      img.onerror = resolve; // Also resolve on error to avoid getting stuck
+    })
+  );
+
+  Promise.all(promises).then(() => {
+    // Ensure the DOM has updated with image dimensions before setting height
+    nextTick(setHeight);
+  });
+};
+
+
 const nextChapter = () => {
   currentChapterIndex.value = (currentChapterIndex.value + 1) % chapters.length;
 };
 
-// Watch for chapter changes to re-calculate height and reset scroll
+const prevChapter = () => {
+  currentChapterIndex.value = (currentChapterIndex.value - 1 + chapters.length) % chapters.length;
+};
+
 watch(currentChapterIndex, async () => {
-  // Wait for the DOM to update with the new images
   await nextTick();
-  
-  // --- BUG FIX: More robust reset logic ---
-  // 1. Forcefully reset the horizontal transform to 0. This is the key fix.
   if (scrollContent.value) {
     scrollContent.value.style.transform = 'translateX(0px)';
   }
-
-  // 2. Recalculate the wrapper height based on the new content.
-  setHeight();
-
-  // 3. Snap the vertical scroll to the top of the component.
+  waitForImagesAndSetHeight();
   if (lenis && galleryWrapper.value) {
     lenis.scrollTo(galleryWrapper.value.offsetTop, { immediate: true });
   }
@@ -109,7 +129,7 @@ onMounted(() => {
   const content = scrollContent.value;
   if (!wrapper || !content) return;
 
-  setHeight();
+  waitForImagesAndSetHeight();
   window.addEventListener('resize', setHeight);
 
   lenis = new Lenis();
@@ -152,8 +172,8 @@ onMounted(() => {
   height: 100vh; 
   overflow: hidden; 
   display: flex; 
-  align-items: flex-start;
-  padding-top: 12rem;
+  justify-content: center;
+  align-items: center;
   box-sizing: border-box;
 }
 .header-content { 
@@ -178,15 +198,27 @@ onMounted(() => {
   font-weight: 600;
   color: #9ca3af;
 }
+
+/* New wrapper for gallery and arrows */
+.gallery-navigation-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .scroll-content { 
   display: flex; 
   align-items: center; 
   gap: 2.5rem; 
   padding: 0 8rem; 
+  height: 50vh;
 }
 .card {
   flex-shrink: 0;
-  width: 28rem;
+  width: auto;
+  height: 100%;
   border-radius: 1.25rem;
   background-color: #1f2937;
   box-shadow: 0 10px 25px rgba(0,0,0,0.3);
@@ -196,56 +228,74 @@ onMounted(() => {
   overflow: hidden;
 }
 .gallery-image {
-  width: 100%;
-  height: auto;
+  width: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
   transition: transform 0.5s ease;
 }
 .card:hover .gallery-image {
   transform: scale(1.05);
 }
-.next-chapter-button {
+
+/* New Arrow Styles */
+.gallery-arrow {
   position: absolute;
-  bottom: 3rem;
-  right: 4rem;
-  z-index: 20;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 30;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 9999px;
   background-color: rgba(255, 255, 255, 0.1);
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 9999px;
-  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
+  opacity: 0; /* Hidden by default */
 }
-.next-chapter-button:hover {
+.gallery-navigation-wrapper:hover .gallery-arrow {
+  opacity: 1; /* Show on wrapper hover */
+}
+.gallery-arrow:hover {
   background-color: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
+  transform: translateY(-50%) scale(1.1);
 }
-.next-chapter-button svg {
-  width: 1.25rem;
-  height: 1.25rem;
+.gallery-arrow.left-arrow { left: 2rem; }
+.gallery-arrow.right-arrow { right: 2rem; }
+.gallery-arrow svg {
+  width: 1.5rem;
+  height: 1.5rem;
 }
+
 .fade-enter-active, .fade-leave-active { transition: opacity 0.4s ease; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
 
 @media (max-width: 768px) {
-  .sticky-container {
-    padding-top: 10rem;
-  }
   .header-content { padding: 2rem 1.5rem; }
   .main-heading { font-size: 1.75rem; }
   .chapter-heading { font-size: 1.25rem; }
-  .scroll-content { padding: 0 1.5rem; gap: 1.5rem; }
-  .card { 
-    width: 75vw; 
-    border-radius: 1rem; 
+  .scroll-content { 
+    padding: 0 1.5rem; 
+    gap: 1.5rem; 
+    height: 50vh;
   }
-  .next-chapter-button { bottom: 2rem; right: 1.5rem; padding: 0.5rem 1rem; font-size: 0.875rem; }
-  .next-chapter-button svg { display: none; }
+  .card { border-radius: 1rem; }
+  
+  /* Adjust arrows for mobile */
+  .gallery-arrow {
+    opacity: 1; /* Always visible on mobile */
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  .gallery-arrow.left-arrow { left: 0.5rem; }
+  .gallery-arrow.right-arrow { right: 0.5rem; }
+  .gallery-arrow svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
 }
 </style>
