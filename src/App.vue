@@ -7,10 +7,11 @@
     >
       <nav class="px-6 py-4 flex justify-end items-center">
         <div class="space-x-6 text-sm">
-          <router-link to="/#culture" class="hover:opacity-75 transition-opacity duration-300">文化</router-link>
-          <router-link to="/#team" class="hover:opacity-75 transition-opacity duration-300">团队</router-link>
-          <router-link 
-            to="/#join" 
+          <a @click.prevent="scrollToSection('#culture')" href="#culture" class="hover:opacity-75 transition-opacity duration-300">文化</a>
+          <a @click.prevent="scrollToSection('#team')" href="#team" class="hover:opacity-75 transition-opacity duration-300">团队</a>
+          <a 
+            @click.prevent="scrollToSection('#join')" 
+            href="#join"
             class="px-4 py-2 rounded-full transition-colors duration-300 font-semibold"
             :class="{ 
               'bg-gray-800 text-white hover:bg-gray-700': isDarkText, 
@@ -18,7 +19,7 @@
             }"
           >
             加入我们
-          </router-link>
+          </a>
         </div>
       </nav>
     </header>
@@ -30,17 +31,37 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 const isDarkText = ref(false);
 const route = useRoute();
+const router = useRouter();
 let observer;
+
+const scrollToSection = async (hash) => {
+  // If we are not on the homepage, navigate there first.
+  if (route.path !== '/') {
+    await router.push('/');
+  }
+
+  // Wait for the DOM to update after the potential route change.
+  await nextTick();
+
+  const element = document.querySelector(hash);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' });
+  }
+};
 
 const setupObserver = () => {
   if (observer) {
     observer.disconnect();
   }
+  // We are looking for a section that is NOT part of the Home.vue
+  // but for the sake of the logic, let's assume it's for a different page view.
+  // The logic should be tied to a specific view, not globally like this.
+  // Let's assume for now it's for a section in a different view.
   const lightBgSection = document.querySelector('#light-bg-section');
   if (!lightBgSection) {
     isDarkText.value = false;
@@ -60,7 +81,6 @@ const setupObserver = () => {
 };
 
 const preloadAssets = () => {
-  // This logic runs only in the production build to avoid spamming the dev server
   if (import.meta.env.PROD) {
     const assetModules = import.meta.glob([
       '/src/assets/members/*.{jpg,jpeg,png}',
@@ -68,13 +88,10 @@ const preloadAssets = () => {
     ]);
 
     for (const path in assetModules) {
-      // Vite's dynamic import returns a function that resolves to the module.
-      // We don't need to call it; referencing the path is enough for the prefetch link.
-      // However, to be robust, let's resolve the URL properly.
       assetModules[path]().then(module => {
         const link = document.createElement('link');
         link.rel = 'prefetch';
-        link.href = module.default; // module.default contains the final URL
+        link.href = module.default;
         document.head.appendChild(link);
       });
     }
@@ -82,11 +99,7 @@ const preloadAssets = () => {
 };
 
 onMounted(() => {
-  // Setup the intersection observer for nav text color
-  // Use a timeout to ensure the child component's DOM is ready
   setTimeout(setupObserver, 100);
-  
-  // Preload key assets after the main app is mounted
   preloadAssets();
 });
 
@@ -102,8 +115,5 @@ onUnmounted(() => {
 </script>
 
 <style>
-/* Ensure smooth scrolling for anchor links on the home page */
-html {
-  scroll-behavior: smooth;
-}
+/* We removed scroll-behavior: smooth from html tag as it can interfere with programmatic scrolling */
 </style>
