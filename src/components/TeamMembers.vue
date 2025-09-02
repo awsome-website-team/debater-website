@@ -77,7 +77,7 @@ import lliImg from '@/assets/members/lli.jpg';
 // 22级
 import yiyijieImg from '@/assets/members/yiyijie.jpg';
 import coconutImg from '@/assets/members/yezi.png';
-import yyImg from '@/assets/members/yy.png';
+import yyImg from '@/assets/members/yy.jpg';
 import sxImg from '@/assets/members/sx.jpg';
 import qiulanImg from '@/assets/members/qiulan.jpg';
 import gengqingjieImg from '@/assets/members/gengqingjie.jpg';
