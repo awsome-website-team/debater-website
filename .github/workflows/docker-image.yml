@@ -2,7 +2,7 @@ name: Docker Image CI
 
 on:
   push:
-    branches: ["main" ]
+    branches: ["main"]
 
 jobs:
   build:
@@ -13,6 +13,33 @@ jobs:
     - name: 读取仓库内容
       uses: actions/checkout@v4
 
+    # ===================================================================
+    # ========== VVVV  以下是为您临时新增的步骤 VVVV ==========
+    # ===================================================================
+
+    - name: 设置 Node.js 环境
+      # 这一步会安装 Node.js，以便我们可以运行 npm 命令
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20' # 重要：请根据您项目的需要，修改为正确的 Node.js 版本，例如 '18' 或 '20'
+
+    - name: 安装依赖并构建项目
+      # 这一步会模拟您在本地的操作，生成静态文件
+      run: |
+        npm install
+        npm run build
+
+    - name: 上传构建产物 (dist 目录)
+      # 这一步会将上面生成的 dist 目录打包，并作为 "Artifact" 供您下载
+      uses: actions/upload-artifact@v4
+      with:
+        name: dist-files # 这是您下载的压缩包的名字
+        path: dist/ # 重要：请确保 'dist/' 是您项目的正确构建输出目录，有些项目可能是 'build/'
+
+    # ===================================================================
+    # ========== ^^^^  以上是为您临时新增的步骤 ^^^^ ==========
+    # ===================================================================
+
     - name: 登陆dockerhub
       uses: docker/login-action@v3
       with:
@@ -20,6 +47,7 @@ jobs:
         password: ${{ secrets.SECRET }}
 
     - name: 构建并推送
+      # 您原有的 Docker 构建流程不受影响
       uses: docker/build-push-action@v5
       with:
         push: true
